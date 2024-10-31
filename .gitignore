@@ -153,6 +153,7 @@ Thumbs.db
 *~
 *.*#
 *#*#
+/.kotlin/
 /assets/assets.txt
 
 ## Special cases:
@@ -162,14 +163,3 @@ Thumbs.db
 ## You could also add that configuration to the text in nativeimage.gradle .
 ## You should delete or comment out the next line if you have configuration in a different resource-config.json .
 **/resource-config.json
-lwjgl3/build.gradle
-lwjgl3/nativeimage.gradle
-lwjgl3/icons/logo.icns
-lwjgl3/icons/logo.ico
-lwjgl3/icons/logo.png
-lwjgl3/src/main/java/io/github/some_example_name/lwjgl3/Lwjgl3Launcher.java
-lwjgl3/src/main/java/io/github/some_example_name/lwjgl3/StartupHelper.java
-lwjgl3/src/main/resources/libgdx16.png
-lwjgl3/src/main/resources/libgdx32.png
-lwjgl3/src/main/resources/libgdx64.png
-lwjgl3/src/main/resources/libgdx128.png
