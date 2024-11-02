@@ -3,10 +3,10 @@
  <editorsettings>
   <export target="TEAM5ENG1map..csv" format="csv"/>
  </editorsettings>
- <tileset firstgid="1" source="../../Basic assets.tsx"/>
- <tileset firstgid="121" source="../../even  more basic assets.tsx"/>
- <tileset firstgid="137" source="../../something.tsx"/>
- <tileset firstgid="281" source="../../something more.tsx"/>
+ <tileset firstgid="1" source="../textures/Basic assets.tsx"/>
+ <tileset firstgid="121" source="../textures/even more basic assets.tsx"/>
+ <tileset firstgid="137" source="../textures/something.tsx"/>
+ <tileset firstgid="281" source="../textures/something more.tsx"/>
  <layer id="1" name="Greenery" width="30" height="20">
   <data encoding="csv">
 20,21,6,73,73,73,73,6,6,6,6,73,73,73,73,73,73,73,6,6,6,6,6,6,6,6,6,6,6,7,
