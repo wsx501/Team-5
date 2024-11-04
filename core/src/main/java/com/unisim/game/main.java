@@ -56,13 +56,14 @@ public class main extends ApplicationAdapter {
         batch.draw(image, 140, 210);
         batch.end();*/
 
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        //Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
         switch(sceneId){
             case 0:
+                Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 menuStage.draw();
                 Timer.schedule(new Timer.Task(){
                     @Override
@@ -72,6 +73,7 @@ public class main extends ApplicationAdapter {
                 }, 5f);
                 break;
             case 1:
+                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
                 mainStage.draw();
                 break;
         }
