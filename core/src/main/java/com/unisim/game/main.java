@@ -28,13 +28,14 @@ public class main extends ApplicationAdapter {
         //batch = new SpriteBatch();
         //image = new Texture("libgdx.png");
         //float w = Gdx.graphics.getWidth();
-        float w = 960;
+        float w = 1260;
         //float h = Gdx.graphics.getHeight();
         float h = 640;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
         camera.update();
+        camera.translate(-300f, 0f);
         tiledMap = new TmxMapLoader().load("TEAM5ENG1map.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         //Gdx.input.setInputProcessor(this);
