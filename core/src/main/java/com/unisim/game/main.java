@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,9 +20,8 @@ public class main extends ApplicationAdapter {
     //private Texture image;
 
     Texture img;
-    TiledMap tiledMap;
-    OrthographicCamera camera;
-    TiledMapRenderer tiledMapRenderer;
+    public static OrthographicCamera camera;
+    Stage stage;
 
     @Override
     public void create() {
@@ -34,10 +34,11 @@ public class main extends ApplicationAdapter {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
-        camera.update();
         camera.translate(-300f, 0f);
-        tiledMap = new TmxMapLoader().load("TEAM5ENG1map.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        camera.update();
+
+        stage = new Stage();
+        stage.addActor(new gameMap());
         //Gdx.input.setInputProcessor(this);
 
         //Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
@@ -56,8 +57,7 @@ public class main extends ApplicationAdapter {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
+        stage.draw();
     }
 
     @Override
