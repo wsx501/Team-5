@@ -39,6 +39,10 @@ public class main extends ApplicationAdapter {
         tiledMap = new TmxMapLoader().load("TEAM5ENG1map.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         //Gdx.input.setInputProcessor(this);
+
+        //Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        //config.setWindowedMode(800, 600);
+
     }
 
     @Override
