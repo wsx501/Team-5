@@ -27,8 +27,10 @@ public class main extends ApplicationAdapter {
     public void create() {
         //batch = new SpriteBatch();
         //image = new Texture("libgdx.png");
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
+        //float w = Gdx.graphics.getWidth();
+        float w = 960;
+        //float h = Gdx.graphics.getHeight();
+        float h = 640;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
