@@ -4,15 +4,13 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.Timer;
+
+import java.util.TimerTask;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class main extends ApplicationAdapter {
@@ -21,7 +19,10 @@ public class main extends ApplicationAdapter {
 
     Texture img;
     public static OrthographicCamera camera;
-    Stage stage;
+
+    int sceneId = 0;
+    Stage menuStage;
+    Stage mainStage;
 
     @Override
     public void create() {
@@ -37,8 +38,10 @@ public class main extends ApplicationAdapter {
         camera.translate(-300f, 0f);
         camera.update();
 
-        stage = new Stage();
-        stage.addActor(new gameMap());
+        menuStage = new Stage();
+
+        mainStage = new Stage();
+        mainStage.addActor(new gameMap());
         //Gdx.input.setInputProcessor(this);
 
         //Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
@@ -57,7 +60,21 @@ public class main extends ApplicationAdapter {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
-        stage.draw();
+
+        switch(sceneId){
+            case 0:
+                menuStage.draw();
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        main.this.sceneId = 1;
+                    }
+                }, 5f);
+                break;
+            case 1:
+                mainStage.draw();
+                break;
+        }
     }
 
     @Override
