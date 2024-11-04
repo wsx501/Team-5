@@ -5,9 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Timer;
 
 import java.util.TimerTask;
@@ -23,6 +27,12 @@ public class main extends ApplicationAdapter {
     int sceneId = 0;
     Stage menuStage;
     Stage mainStage;
+
+    TextButton playButton;
+    TextButton.TextButtonStyle playButtonStyle;
+    BitmapFont font;
+    Skin skin;
+    TextureAtlas atlas;
 
     @Override
     public void create() {
@@ -47,6 +57,8 @@ public class main extends ApplicationAdapter {
         //Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         //config.setWindowedMode(800, 600);
 
+
+
     }
 
     @Override
@@ -65,6 +77,7 @@ public class main extends ApplicationAdapter {
             case 0:
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 menuStage.draw();
+
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -78,6 +91,8 @@ public class main extends ApplicationAdapter {
                 break;
         }
     }
+
+
 
     @Override
     public void dispose() {
