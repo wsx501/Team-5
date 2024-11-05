@@ -6,9 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -39,8 +37,17 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Skin skin;
     TextureAtlas buttonAtlas;
 
+    SpriteBatch testBatch;
+    Texture testImg;
+    Sprite testSprite;
+
     @Override
     public void create() {
+        testBatch = new SpriteBatch();
+        testImg = new Texture("buttons/Resume Button.png");
+        testSprite = new Sprite(testImg);
+        testSprite.setPosition(Gdx.graphics.getWidth()/2 - testSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - testSprite.getHeight() / 2);
+
         //batch = new SpriteBatch();
         //image = new Texture("libgdx.png");
         //float w = Gdx.graphics.getWidth();
@@ -68,7 +75,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
         //Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         //config.setWindowedMode(800, 600);
 
-
+        //needs to be removed
+        Gdx.input.setInputProcessor(this);
 
     }
 
@@ -82,12 +90,17 @@ public class main extends ApplicationAdapter implements InputProcessor {
         //Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        testBatch.begin();
+        testBatch.draw(testSprite, testSprite.getX(), testSprite.getY());
+        testBatch.end();
+
         camera.update();
 
         switch(sceneId){
             case 0:
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
-                Gdx.input.setInputProcessor(menuStage);
+                //Gdx.input.setInputProcessor(menuStage);
                 //if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                   //  if (());
                 //}
@@ -112,6 +125,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean keyDown(int i) {
+        //needs to be removed
+        if (i == Input.Keys.LEFT) {
+            testSprite.translateX(-100f);
+        }
         return false;
     }
 
