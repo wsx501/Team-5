@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class main extends ApplicationAdapter implements InputProcessor {
@@ -35,17 +37,18 @@ public class main extends ApplicationAdapter implements InputProcessor {
     TextureAtlas buttonAtlas;
 
     SpriteBatch testBatch;
-    Texture testImg;
-    Sprite testSprite;
+    Skin testSkin;
 
-    MenuButton colourChangingButton;
+    //Texture testImg;
+    //Sprite testSprite;
+
+    //MenuButton colourChangingButton;
 
     @Override
     public void create() {
-        testBatch = new SpriteBatch();
-        testImg = new Texture("buttons/Resume Button.png");
-        testSprite = new Sprite(testImg);
-        testSprite.setPosition(Gdx.graphics.getWidth()/2 - testSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - testSprite.getHeight() / 2);
+        //testImg = new Texture("buttons/Resume Button.png");
+        //testSprite = new Sprite(testImg);
+        //testSprite.setPosition(Gdx.graphics.getWidth()/2 - testSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - testSprite.getHeight() / 2);
 
         //batch = new SpriteBatch();
         //image = new Texture("libgdx.png");
@@ -60,10 +63,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
         camera.update();
 
         menuStage = new Stage();
-        MenuButton playButton = new MenuButton("buttons/Play Button.png",
-                                (Gdx.graphics.getHeight()/2f),
-                                Gdx.graphics.getWidth()/2f,
-                                0.5f);
+        MenuButton playButton = new MenuButton("buttons/Play Button.png",0, 0, 0.5f);
+        playButton.setPosition(Gdx.graphics.getWidth()/2f - playButton.getWidth() / 2,
+                               Gdx.graphics.getHeight()/2f - playButton.getHeight() / 2);
+
 
         playButton.addListener(new ChangeListener() {
             @Override
@@ -72,22 +75,41 @@ public class main extends ApplicationAdapter implements InputProcessor {
             }
         });
 
+        // testing new button out
+        testBatch = new SpriteBatch();
+        testSkin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
+
+        TextButton testButton = new TextButton("Play", testSkin, "default");
+        testButton.setWidth(200f);
+        testButton.setHeight(20f);
+        testButton.setPosition(Gdx.graphics.getWidth() / 2 - 100f, Gdx.graphics.getHeight() / 2 - 200f);
+
+        testButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                testButton.setText("you've clicked the button.");
+            }
+        });
+
+        menuStage.addActor(testButton);
+
         playButton.setTouchable(Touchable.enabled);
         menuStage.addActor(playButton);
 
 
         mainStage = new Stage();
         mainStage.addActor(new gameMap());
+
         Gdx.input.setInputProcessor(menuStage);
 
-        colourChangingButton = new MenuButton("buttons/Back Square Button.png",
-            (Gdx.graphics.getHeight()/2f),
-            Gdx.graphics.getWidth()/2f,
-            0.5f);
+        //colourChangingButton = new MenuButton("buttons/Back Square Button.png",
+        //    (Gdx.graphics.getHeight()/2f),
+        //    Gdx.graphics.getWidth()/2f,
+        //    0.5f);
 
-        colourChangingButton.setPosition(Gdx.graphics.getWidth()/2 - colourChangingButton.getWidth() / 2,
-            Gdx.graphics.getHeight()/2 - colourChangingButton.getHeight() / 2);
-        menuStage.addActor(colourChangingButton);
+        //colourChangingButton.setPosition(Gdx.graphics.getWidth()/2 - colourChangingButton.getWidth() / 2,
+        //    Gdx.graphics.getHeight()/2 - colourChangingButton.getHeight() / 2);
+        //menuStage.addActor(colourChangingButton);
 
 
 
@@ -121,14 +143,14 @@ public class main extends ApplicationAdapter implements InputProcessor {
             //sceneId = 1;
         //}
         // resets sprite to centre screen (on right click)
-        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-            testSprite.setPosition(Gdx.graphics.getWidth() / 2 - testSprite.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - testSprite.getHeight() / 2);
-        }
+        //if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+        //    testSprite.setPosition(Gdx.graphics.getWidth() / 2 - testSprite.getWidth() / 2,
+        //        Gdx.graphics.getHeight() / 2 - testSprite.getHeight() / 2);
+        //}
 
-        testBatch.begin();
-        testSprite.draw(testBatch);
-        testBatch.end();
+        //testBatch.begin();
+        //testSprite.draw(testBatch);
+        //testBatch.end();
 
         camera.update();
 
@@ -141,7 +163,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 //}
 
                 menuStage.act(Gdx.graphics.getDeltaTime());
+                testBatch.begin(); // to remove
                 menuStage.draw();
+                testBatch.end(); // to remove
                 break;
             case 1:
                 Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
@@ -149,10 +173,6 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 break;
         }
     }
-
-
-
-
 
     @Override
     public void dispose() {
