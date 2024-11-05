@@ -1,23 +1,22 @@
 package com.unisim.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
-public class button extends Actor {
+public class MenuButton extends Actor {
     //Texture texture;
     //TextureRegion region;
 
     Sprite sprite;
+    Color colour;
 
-    public button(String buttonPath, float x, float y, float scale) {
+    public MenuButton(String buttonPath, float x, float y, float scale) {
         sprite = new Sprite(new Texture(buttonPath));
         //texture = new Texture(buttonPath);
         //region = new TextureRegion(texture);
@@ -29,6 +28,8 @@ public class button extends Actor {
         setWidth(getWidth()*scale);
         setHeight(getHeight()*scale);
 
+        colour = new Color(Color.WHITE);
+
         //addListener(new InputListener() {
 
         //});
@@ -36,16 +37,18 @@ public class button extends Actor {
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return super.touchDown(event, x, y, pointer, button);
+                colour.set(Color.RED);
+                return true;
             }
         });
 
-        //button.setPosition(Gdx.input.getX(), Gdx.input.getY());
+        //MenuButton.setPosition(Gdx.input.getX(), Gdx.input.getY());
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        sprite.draw(batch);
+        batch.setColor(colour);
+        batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
     }
 
     @Override

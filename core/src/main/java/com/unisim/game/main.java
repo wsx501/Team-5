@@ -7,17 +7,14 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.Vector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.Timer;
-
-import java.util.TimerTask;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class main extends ApplicationAdapter implements InputProcessor {
@@ -41,6 +38,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Texture testImg;
     Sprite testSprite;
 
+    MenuButton colourChangingButton;
+
     @Override
     public void create() {
         testBatch = new SpriteBatch();
@@ -61,22 +60,45 @@ public class main extends ApplicationAdapter implements InputProcessor {
         camera.update();
 
         menuStage = new Stage();
-        button playButton = new button("buttons/Play Button.png",
-                                (Gdx.graphics.getHeight()/2f)+400f,
+        MenuButton playButton = new MenuButton("buttons/Play Button.png",
+                                (Gdx.graphics.getHeight()/2f),
                                 Gdx.graphics.getWidth()/2f,
                                 0.5f);
+
+        playButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("play button pressed");
+            }
+        });
+
+        playButton.setTouchable(Touchable.enabled);
         menuStage.addActor(playButton);
 
 
         mainStage = new Stage();
         mainStage.addActor(new gameMap());
+        Gdx.input.setInputProcessor(menuStage);
+
+        colourChangingButton = new MenuButton("buttons/Back Square Button.png",
+            (Gdx.graphics.getHeight()/2f),
+            Gdx.graphics.getWidth()/2f,
+            0.5f);
+
+        colourChangingButton.setPosition(Gdx.graphics.getWidth()/2 - colourChangingButton.getWidth() / 2,
+            Gdx.graphics.getHeight()/2 - colourChangingButton.getHeight() / 2);
+        menuStage.addActor(colourChangingButton);
+
+
+
+
         //Gdx.input.setInputProcessor(this);
 
         //Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         //config.setWindowedMode(800, 600);
 
         //needs to be removed
-        Gdx.input.setInputProcessor(this);
+        //Gdx.input.setInputProcessor(this);
 
     }
 
@@ -91,8 +113,21 @@ public class main extends ApplicationAdapter implements InputProcessor {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // makes sprite follow mouse (on left click)
+        // or changes scene to mainStage
+        //if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            //testSprite.setPosition(Gdx.input.getX() - testSprite.getWidth() / 2,
+            //    Gdx.graphics.getHeight() - Gdx.input.getY() - testSprite.getHeight() / 2);
+            //sceneId = 1;
+        //}
+        // resets sprite to centre screen (on right click)
+        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+            testSprite.setPosition(Gdx.graphics.getWidth() / 2 - testSprite.getWidth() / 2,
+                Gdx.graphics.getHeight() / 2 - testSprite.getHeight() / 2);
+        }
+
         testBatch.begin();
-        testBatch.draw(testSprite, testSprite.getX(), testSprite.getY());
+        testSprite.draw(testBatch);
         testBatch.end();
 
         camera.update();
@@ -100,10 +135,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
         switch(sceneId){
             case 0:
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
-                //Gdx.input.setInputProcessor(menuStage);
+                Gdx.input.setInputProcessor(menuStage);
                 //if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                   //  if (());
                 //}
+
+                menuStage.act(Gdx.graphics.getDeltaTime());
                 menuStage.draw();
                 break;
             case 1:
@@ -125,10 +162,6 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean keyDown(int i) {
-        //needs to be removed
-        if (i == Input.Keys.LEFT) {
-            testSprite.translateX(-100f);
-        }
         return false;
     }
 
@@ -144,13 +177,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector2 coord = menuStage.screenToStageCoordinates(new Vector2((float) screenX, (float) screenY));
-        Actor hitActor = menuStage.hit(coord.x, coord.y, false);
-
-        if (hitActor != null) {
-            Gdx.app.exit();
-        }
         return false;
+
     }
 
     @Override
