@@ -26,7 +26,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     //private SpriteBatch batch;
     //private Texture image;
 
-    Texture img;
+    //Texture img;
     public static OrthographicCamera camera;
 
     int sceneId = 0;
