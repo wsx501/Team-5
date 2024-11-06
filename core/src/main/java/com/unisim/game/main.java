@@ -69,6 +69,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
     ImageButton gymButton;
     ImageButton lectureHallButton;
 
+    Image[] buildingImgs;
+    Label[] buildingCounters;
+    Label[] buildingLabels;
+    ImageButton[] buildingButtons;
+
 
     Table buildingsTable;
     Table buttonsTable;
@@ -155,6 +160,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
         gymImg = new Image(new Texture(Gdx.files.internal("Gym.png")));
         lectureHallImg = new Image(new Texture(Gdx.files.internal("lecture hall.png")));
         constructionImg = new Image(new Texture(Gdx.files.internal("Construction.png")));
+
+        for (int i = 0; i < 5; i++) {
+
+        }
 
         accommodationButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Accommodation.png")))));
         clubButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Club.png")))));
