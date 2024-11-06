@@ -69,6 +69,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
     ImageButton gymButton;
     ImageButton lectureHallButton;
 
+    Image[] buildingImgs;
+    Label[] buildingCounters;
+    Label[] buildingLabels;
+    ImageButton[] buildingButtons;
+
 
     Table buildingsTable;
     Table buttonsTable;
@@ -156,40 +161,67 @@ public class main extends ApplicationAdapter implements InputProcessor {
         lectureHallImg = new Image(new Texture(Gdx.files.internal("lecture hall.png")));
         constructionImg = new Image(new Texture(Gdx.files.internal("Construction.png")));
 
-        accommodationButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Accommodation.png")))));
-        clubButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Club.png")))));
-        foodHallButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Food Hall.png")))));
-        gymButton = new ImageButton(new TextureRegionDrawable(new Texture(Gdx.files.internal("Gym.png"))));
-        lectureHallButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Lecture hall.png")))));
+//        accommodationButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Accommodation.png")))));
+//        clubButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Club.png")))));
+//        foodHallButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Food Hall.png")))));
+//        gymButton = new ImageButton(new TextureRegionDrawable(new Texture(Gdx.files.internal("Gym.png"))));
+//        lectureHallButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Lecture hall.png")))));
 
+//        addButton("Accommodation.png", 0);
+//        addButton("Club.png", 1);
+//        addButton("Food Hall.png", 2);
+//        addButton("Gym.png", 3);
+//        addButton("Lecture hall.png", 4);
 
-        accomCounter = new Label("0", skin);
-        clubCounter = new Label("0", skin);
-        foodCounter = new Label("0", skin);
-        gymCounter = new Label("0", skin);
-        lectureCounter = new Label("0", skin);
+//        accomCounter = new Label("0", skin);
+//        clubCounter = new Label("0", skin);
+//        foodCounter = new Label("0", skin);
+//        gymCounter = new Label("0", skin);
+//        lectureCounter = new Label("0", skin);
+
+        String[] filepaths = {"Accommodation.png", "Lecture hall.png", "Food Hall.png", "Gym.png", "Club.png"};
+
+        // adding buttons to the screen
+        buildingButtons = new ImageButton[5];
+        for (int i = 0; i < filepaths.length; i++) {
+            buildingButtons[i] = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(filepaths[i]))));
+        }
+
+        // adding building counters
+        buildingCounters = new Label[5];
+        for (int i = 0; i < filepaths.length; i++) {
+            buildingCounters[i] = new Label("0", skin);
+        }
 
         buildingsTable = new Table();
-        int cellW = 100;
-        int cellH = 100;
+        int cellW = 150;
+        int cellH = 150;
 
         buildingsTable.add(buildingsLabel);
         buildingsTable.add(counterLabel);
-        buildingsTable.row();
-        buildingsTable.add(accommodationButton).width(cellW).height(cellH);
-        buildingsTable.add(accomCounter);
-        buildingsTable.row();
-        buildingsTable.add(clubButton).width(cellW).height(cellH);
-        buildingsTable.add(clubCounter);
-        buildingsTable.row();
-        buildingsTable.add(foodHallButton).width(cellW).height(cellH);
-        buildingsTable.add(foodCounter);
-        buildingsTable.row();
-        buildingsTable.add(gymButton).width(cellW).height(cellH);
-        buildingsTable.add(gymCounter);
-        buildingsTable.row();
-        buildingsTable.add(lectureHallButton).width(cellW).height(cellH);
-        buildingsTable.add(lectureCounter);
+
+        // adding buttons and counters to table
+        for (int i = 0; i < buildingCounters.length; i++) {
+            buildingsTable.row();
+            buildingsTable.add(buildingButtons[i]).width(cellW).height(cellH);
+            buildingsTable.add(buildingCounters[i]);
+        }
+
+//        buildingsTable.row();
+//        buildingsTable.add(accommodationButton).width(cellW).height(cellH);
+//        buildingsTable.add(accomCounter);
+//        buildingsTable.row();
+//        buildingsTable.add(clubButton).width(cellW).height(cellH);
+//        buildingsTable.add(clubCounter);
+//        buildingsTable.row();
+//        buildingsTable.add(foodHallButton).width(cellW).height(cellH);
+//        buildingsTable.add(foodCounter);
+//        buildingsTable.row();
+//        buildingsTable.add(gymButton).width(cellW).height(cellH);
+//        buildingsTable.add(gymCounter);
+//        buildingsTable.row();
+//        buildingsTable.add(lectureHallButton).width(cellW).height(cellH);
+//        buildingsTable.add(lectureCounter);
 
         // https://stackoverflow.com/questions/39081993/libgdx-scene2d-set-background-color-of-table
         // i tried
@@ -199,19 +231,30 @@ public class main extends ApplicationAdapter implements InputProcessor {
         backgroundPM.fill();
         buildingsTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(backgroundPM))));
 
-        accommodationButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                accomCounter.setText(String.valueOf(Integer.parseInt(accomCounter.getText().toString()) + 1));
-            }
-        });
-        clubButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //clubCounter.setText(String.valueOf(Integer.parseInt(clubCounter.getText().toString()) + 1));
-                sceneId = 0;
-            }
-        });
+        // adding event listeners
+        for (int i = 0; i < filepaths.length; i++) {
+            int finalI = i;
+            buildingButtons[i].addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    buildingCounters[finalI].setText(String.valueOf(Integer.parseInt(buildingCounters[finalI].getText().toString()) + 1));
+                }
+            });
+        }
+
+//        accommodationButton.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                accomCounter.setText(String.valueOf(Integer.parseInt(accomCounter.getText().toString()) + 1));
+//            }
+//        });
+//        clubButton.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                //clubCounter.setText(String.valueOf(Integer.parseInt(clubCounter.getText().toString()) + 1));
+//                sceneId = 0;
+//            }
+//        });
 
         buildingsTable.setPosition(100, Gdx.graphics.getHeight()/2);
         mainStage.addActor(buildingsTable);
@@ -242,6 +285,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
         //needs to be removed
         //Gdx.input.setInputProcessor(this);
 
+    }
+
+    private void addButton(String filepath, int index) {
+        buildingButtons[index] = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(filepath)))));
     }
 
     @Override
