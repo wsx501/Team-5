@@ -29,7 +29,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Stage menuStage;
     Stage mainStage;
 
-    TextButton testButton;
+    //TextButton testButton;
     TextButton.TextButtonStyle playButtonStyle;
     BitmapFont font;
     Viewport viewport;
@@ -42,6 +42,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
     //Sprite testSprite;
 
     //MenuButton colourChangingButton;
+
+    ImageButton playImgButton;
 
     Label buildingsLabel;
     TextField buildingsText;
@@ -82,26 +84,35 @@ public class main extends ApplicationAdapter implements InputProcessor {
         //font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
 
         menuStage = new Stage();
-        MenuButton playButton = new MenuButton("buttons/Play Button.png",0, 0, 0.5f);
-        playButton.setPosition(Gdx.graphics.getWidth()/2f - playButton.getWidth() / 2,
-                               Gdx.graphics.getHeight()/2f - playButton.getHeight() / 2);
+
+//        MenuButton playButton = new MenuButton("buttons/Play Button.png",0, 0, 0.5f);
+//        playButton.setPosition(Gdx.graphics.getWidth()/2f - playButton.getWidth() / 2,
+//                               Gdx.graphics.getHeight()/2f - playButton.getHeight() / 2);
 
 
-        playButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("play button pressed");
-            }
-        });
+//        playButton.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                System.out.println("play button pressed");
+//            }
+//        });
+
+        // testing image button
+        playImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Play Button.png")))));
+        playImgButton.setPosition(Gdx.graphics.getWidth()/2 - playImgButton.getWidth() / 2,
+                                  Gdx.graphics.getHeight()/2f - 50f);
+        menuStage.addActor(playImgButton);
 
         // testing new button out
         testBatch = new SpriteBatch();
         skin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
 
-        testButton = new TextButton("Play", skin, "default");
-        testButton.setWidth(200f);
-        testButton.setHeight(20f);
-        testButton.setPosition(Gdx.graphics.getWidth() / 2 - 100f, Gdx.graphics.getHeight() / 2 - 200f);
+//        testButton = new TextButton("Play", skin, "default");
+//        testButton.setWidth(200f);
+//        testButton.setHeight(20f);
+//        testButton.setPosition(Gdx.graphics.getWidth() / 2 - 100f, Gdx.graphics.getHeight() / 2 - 200f);
+
+
 
 //        testButton.addListener(new ClickListener() {
 //            @Override
@@ -110,10 +121,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //            }
 //        });
 
-        menuStage.addActor(testButton);
+//        menuStage.addActor(testButton);
 
-        playButton.setTouchable(Touchable.enabled);
-        menuStage.addActor(playButton);
+//        playButton.setTouchable(Touchable.enabled);
+//        menuStage.addActor(playButton);
 
 
 
@@ -139,8 +150,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
         Label lectureCounter = new Label("0", skin);
 
         buildingsTable = new Table();
-        int cellW = 30;
-        int cellH = 60;
+        int cellW = 100;
+        int cellH = 100;
 
         buildingsTable.add(buildingsLabel);
         buildingsTable.add(counterLabel);
@@ -237,10 +248,16 @@ public class main extends ApplicationAdapter implements InputProcessor {
                   //  if (());
                 //}
 
-                testButton.addListener(new ClickListener() {
+//                testButton.addListener(new ClickListener() {
+//                    @Override
+//                    public void clicked(InputEvent event, float x, float y) {
+//                        testButton.setText("you've clicked the button.");
+//                        sceneId = 1;
+//                    }
+//                });
+                playImgButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        testButton.setText("you've clicked the button.");
                         sceneId = 1;
                     }
                 });
