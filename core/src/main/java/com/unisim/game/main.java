@@ -57,6 +57,13 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Image lectureHallImg;
     Image constructionImg;
 
+    ImageButton accomodationButton;
+    ImageButton clubButton;
+    ImageButton foodHallButton;
+    ImageButton gymButton;
+    ImageButton lectureHallButton;
+
+
     Table buildingsTable;
     Table buttonsTable;
     Table scoreTable;
