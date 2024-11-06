@@ -8,14 +8,11 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.*;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.TimerTask;
+import java.awt.font.ImageGraphicAttribute;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class main extends ApplicationAdapter implements InputProcessor {
@@ -45,9 +42,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
     ImageButton playImgButton;
 
-    Label buildingsLabel;
+    Label buildingsTitle;
     TextField buildingsText;
-    Label counterLabel;
+    Label countersTitle;
     TextField counterText;
 
     Image accommodationImg;
@@ -57,28 +54,45 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Image lectureHallImg;
     Image constructionImg;
 
-    Label accomCounter;
-    Label clubCounter;
-    Label foodCounter;
-    Label gymCounter;
-    Label lectureCounter;
+//    Label accomCounter;
+//    Label clubCounter;
+//    Label foodCounter;
+//    Label gymCounter;
+//    Label lectureCounter;
 
-    ImageButton accommodationButton;
-    ImageButton clubButton;
-    ImageButton foodHallButton;
-    ImageButton gymButton;
-    ImageButton lectureHallButton;
+//    ImageButton accommodationButton;
+//    ImageButton clubButton;
+//    ImageButton foodHallButton;
+//    ImageButton gymButton;
+//    ImageButton lectureHallButton;
 
     Image[] buildingImgs;
     Label[] buildingCounters;
     Label[] buildingLabels;
     ImageButton[] buildingButtons;
 
+    ImageButton pauseButton;
+    ImageButton tutorialButton;
+
+    int score;
+    Label scoreTitleLabel;
+    Label scoreTextLabel;
+
+    // to change
+    int time;
+    Label timeTitleLabel;
+    Label timeTextLabel;
+
+    Color mainColour;
 
     Table buildingsTable;
     Table buttonsTable;
     Table scoreTable;
     Table timerTable;
+    Table miscTable;
+
+    ImageButton resumeButtonOnPause;
+    ImageButton resumeButtonOnTutorial;
 
     @Override
     public void create() {
@@ -102,6 +116,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         //font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
 
         menuStage = new Stage();
+        mainColour = new Color(0.09f, 0.41f, 0.22f, 1f);
 
 //        MenuButton playButton = new MenuButton("buttons/Play Button.png",0, 0, 0.5f);
 //        playButton.setPosition(Gdx.graphics.getWidth()/2f - playButton.getWidth() / 2,
@@ -115,13 +130,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //            }
 //        });
 
-        // testing image button
+        // play button on menu stage
         playImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Play Button.png")))));
         playImgButton.setPosition(Gdx.graphics.getWidth()/2 - playImgButton.getWidth() / 2,
                                   Gdx.graphics.getHeight()/2f - 50f);
         menuStage.addActor(playImgButton);
 
-        // testing new button out
         testBatch = new SpriteBatch();
         skin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
 
@@ -149,9 +163,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
         mainStage = new Stage();
         mainStage.addActor(new gameMap());
 
-        buildingsLabel = new Label("Buildings", skin);
+        buildingsTitle = new Label("Buildings", skin);
         buildingsText = new TextField("", skin);
-        counterLabel = new Label("Counter", skin);
+        countersTitle = new Label("Counter", skin);
         counterText = new TextField("", skin);
 
         accommodationImg = new Image(new Texture(Gdx.files.internal("Accommodation.png")));
@@ -179,32 +193,41 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //        gymCounter = new Label("0", skin);
 //        lectureCounter = new Label("0", skin);
 
-        String[] filepaths = {"Accommodation.png", "Lecture hall.png", "Food Hall.png", "Gym.png", "Club.png"};
+        String[] filepaths = {"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
 
-        // adding buttons to the screen
+        // adding buttons for each building type
         buildingButtons = new ImageButton[5];
         for (int i = 0; i < filepaths.length; i++) {
             buildingButtons[i] = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(filepaths[i]))));
         }
 
-        // adding building counters
+        // adding counters for each building type
         buildingCounters = new Label[5];
         for (int i = 0; i < filepaths.length; i++) {
             buildingCounters[i] = new Label("0", skin);
         }
 
-        buildingsTable = new Table();
-        int cellW = 150;
-        int cellH = 150;
+        // adding labels for each building type
+        buildingLabels = new Label[5];
+        for (int i = 0; i < filepaths.length; i++) {
+            String buildingLabel = filepaths[i];
+            buildingLabel = buildingLabel.substring(0, buildingLabel.length()-4);
+            buildingLabels[i] = new Label(buildingLabel, skin);
+        }
 
-        buildingsTable.add(buildingsLabel);
-        buildingsTable.add(counterLabel);
+        buildingsTable = new Table();
+
+        buildingsTable.add(buildingsTitle);
+        buildingsTable.add(countersTitle);
 
         // adding buttons and counters to table
+        int cellD = 110;
         for (int i = 0; i < buildingCounters.length; i++) {
             buildingsTable.row();
-            buildingsTable.add(buildingButtons[i]).width(cellW).height(cellH);
+            buildingsTable.add(buildingButtons[i]).width(cellD).height(cellD);
             buildingsTable.add(buildingCounters[i]);
+            buildingsTable.row();
+            buildingsTable.add(buildingLabels[i]).width(cellD).height(20);
         }
 
 //        buildingsTable.row();
@@ -242,6 +265,57 @@ public class main extends ApplicationAdapter implements InputProcessor {
             });
         }
 
+        // adding score table
+        scoreTable = new Table();
+        scoreTitleLabel = new Label("score", skin);
+        scoreTextLabel = new Label(String.valueOf(score), skin);
+        scoreTable.add(scoreTitleLabel);
+        scoreTable.row();
+        scoreTable.add(scoreTextLabel);
+
+        // adding time table
+        timerTable = new Table();
+        timeTitleLabel = new Label("time left", skin);
+        timeTextLabel = new Label(String.valueOf(time), skin);
+        timerTable.add(timeTitleLabel);
+        timerTable.row();
+        timerTable.add(timeTextLabel);
+
+        // adding pause and tutorial buttons
+        // new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(filepaths[i]))));
+        pauseButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Pause Square Button.png")))));
+        tutorialButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Questionmark Square Button.png")))));
+        pauseButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // changing scene to pause screen
+                sceneId = 2;
+            }
+        });
+        tutorialButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // changing scene to tutorial screen
+                sceneId = 3;
+            }
+        });
+
+
+        miscTable = new Table();
+        miscTable.add(pauseButton);
+        miscTable.add(tutorialButton);
+        miscTable.row();
+        miscTable.add(scoreTable);
+        miscTable.add(timerTable);
+
+        buttonsTable = new Table();
+        buttonsTable.add(miscTable);
+        buttonsTable.row();
+        buttonsTable.add(buildingsTable);
+
+
+
+
 //        accommodationButton.addListener(new ClickListener() {
 //            @Override
 //            public void clicked(InputEvent event, float x, float y) {
@@ -256,8 +330,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //            }
 //        });
 
-        buildingsTable.setPosition(100, Gdx.graphics.getHeight()/2);
-        mainStage.addActor(buildingsTable);
+//        buildingsTable.setPosition(150, Gdx.graphics.getHeight()/2);
+//        mainStage.addActor(buildingsTable);
+
+        //buttonsTable.setDebug(true);
+        buttonsTable.setPosition(150, Gdx.graphics.getHeight() / 2f);
+        mainStage.addActor(buttonsTable);
 
         //table.add(buildingsText).width(100);
         //table.row();
@@ -323,6 +401,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         switch(sceneId){
             case 0:
+                //Gdx.gl.glClearColor(0.45f, 0.52f, 0.98f, 1);
                 Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
                 Gdx.input.setInputProcessor(menuStage);
                 //if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -350,6 +429,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 break;
             case 1:
                 Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                //Gdx.gl.glClearColor(0.45f, 0.52f, 0.98f, 1);
                 Gdx.input.setInputProcessor(mainStage);
 
                 mainStage.act(Gdx.graphics.getDeltaTime());
