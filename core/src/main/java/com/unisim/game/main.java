@@ -12,11 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -35,16 +33,29 @@ public class main extends ApplicationAdapter implements InputProcessor {
     TextButton.TextButtonStyle playButtonStyle;
     BitmapFont font;
     Viewport viewport;
-    Skin skin;
     TextureAtlas buttonAtlas;
 
     SpriteBatch testBatch;
-    Skin testSkin;
+    Skin skin;
 
     //Texture testImg;
     //Sprite testSprite;
 
     //MenuButton colourChangingButton;
+
+    Label buildingsLabel;
+    TextField buildingsText;
+    Label counterLabel;
+    TextField counterText;
+
+    Image accommodationImg;
+    Image clubImg;
+    Image foodHallImg;
+    Image gymImg;
+    Image lectureHallImg;
+    Image constructionImg;
+
+    Table table;
 
     @Override
     public void create() {
@@ -82,9 +93,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         // testing new button out
         testBatch = new SpriteBatch();
-        testSkin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
 
-        testButton = new TextButton("Play", testSkin, "default");
+        testButton = new TextButton("Play", skin, "default");
         testButton.setWidth(200f);
         testButton.setHeight(20f);
         testButton.setPosition(Gdx.graphics.getWidth() / 2 - 100f, Gdx.graphics.getHeight() / 2 - 200f);
@@ -102,8 +113,44 @@ public class main extends ApplicationAdapter implements InputProcessor {
         menuStage.addActor(playButton);
 
 
+
         mainStage = new Stage();
         mainStage.addActor(new gameMap());
+
+        buildingsLabel = new Label("Buildings", skin);
+        buildingsText = new TextField("", skin);
+        counterLabel = new Label("Counter", skin);
+        counterText = new TextField("", skin);
+
+        accommodationImg = new Image(new Texture(Gdx.files.internal("Accommodation.png")));
+        clubImg = new Image(new Texture(Gdx.files.internal("Club.png")));
+        foodHallImg = new Image(new Texture(Gdx.files.internal("Food Hall.png")));
+        gymImg = new Image(new Texture(Gdx.files.internal("Gym.png")));
+        lectureHallImg = new Image(new Texture(Gdx.files.internal("lecture hall.png")));
+        constructionImg = new Image(new Texture(Gdx.files.internal("Construction.png")));
+
+        table = new Table();
+
+        table.add(buildingsLabel);
+        table.add(counterLabel);
+        table.row();
+        table.add(accommodationImg).width(50).height(100);
+        table.row();
+        table.add(clubImg).width(50).height(100);
+        table.row();
+        table.add(foodHallImg).width(50).height(100);
+        table.row();
+        table.add(gymImg).width(50).height(100);
+        table.row();
+        table.add(lectureHallImg).width(50).height(100);
+
+
+        table.setPosition(100, Gdx.graphics.getHeight() / 2);
+        mainStage.addActor(table);
+
+        //table.add(buildingsText).width(100);
+        //table.row();
+        //table.add(counterText).width(100);
 
         Gdx.input.setInputProcessor(menuStage);
 
