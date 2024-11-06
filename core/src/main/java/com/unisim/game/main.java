@@ -3,18 +3,18 @@ package com.unisim.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -55,7 +55,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Image lectureHallImg;
     Image constructionImg;
 
-    Table table;
+    Table buildingsTable;
+    Table buttonsTable;
+    Table scoreTable;
+    Table timerTable;
 
     @Override
     public void create() {
@@ -129,24 +132,44 @@ public class main extends ApplicationAdapter implements InputProcessor {
         lectureHallImg = new Image(new Texture(Gdx.files.internal("lecture hall.png")));
         constructionImg = new Image(new Texture(Gdx.files.internal("Construction.png")));
 
-        table = new Table();
+        Label accomCounter = new Label("0", skin);
+        Label clubCounter = new Label("0", skin);
+        Label foodCounter = new Label("0", skin);
+        Label gymCounter = new Label("0", skin);
+        Label lectureCounter = new Label("0", skin);
 
-        table.add(buildingsLabel);
-        table.add(counterLabel);
-        table.row();
-        table.add(accommodationImg).width(50).height(100);
-        table.row();
-        table.add(clubImg).width(50).height(100);
-        table.row();
-        table.add(foodHallImg).width(50).height(100);
-        table.row();
-        table.add(gymImg).width(50).height(100);
-        table.row();
-        table.add(lectureHallImg).width(50).height(100);
+        buildingsTable = new Table();
+        int cellW = 30;
+        int cellH = 60;
 
+        buildingsTable.add(buildingsLabel);
+        buildingsTable.add(counterLabel);
+        buildingsTable.row();
+        buildingsTable.add(accommodationImg).width(cellW).height(cellH);
+        buildingsTable.add(accomCounter);
+        buildingsTable.row();
+        buildingsTable.add(clubImg).width(cellW).height(cellH);
+        buildingsTable.add(clubCounter);
+        buildingsTable.row();
+        buildingsTable.add(foodHallImg).width(cellW).height(cellH);
+        buildingsTable.add(foodCounter);
+        buildingsTable.row();
+        buildingsTable.add(gymImg).width(cellW).height(cellH);
+        buildingsTable.add(gymCounter);
+        buildingsTable.row();
+        buildingsTable.add(lectureHallImg).width(cellW).height(cellH);
+        buildingsTable.add(lectureCounter);
 
-        table.setPosition(100, Gdx.graphics.getHeight() / 2);
-        mainStage.addActor(table);
+        // https://stackoverflow.com/questions/39081993/libgdx-scene2d-set-background-color-of-table
+        // i tried
+        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
+        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
+        backgroundPM.setColor(backgroundColour);
+        backgroundPM.fill();
+        buildingsTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(backgroundPM))));
+
+        buildingsTable.setPosition(100, Gdx.graphics.getHeight()/2);
+        mainStage.addActor(buildingsTable);
 
         //table.add(buildingsText).width(100);
         //table.row();
