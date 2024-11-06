@@ -179,7 +179,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //        gymCounter = new Label("0", skin);
 //        lectureCounter = new Label("0", skin);
 
-        String[] filepaths = {"Accommodation.png", "Club.png", "Food Hall.png", "Gym.png", "Lecture hall.png"};
+        String[] filepaths = {"Accommodation.png", "Lecture hall.png", "Food Hall.png", "Gym.png", "Club.png"};
 
         // adding buttons to the screen
         buildingButtons = new ImageButton[5];
