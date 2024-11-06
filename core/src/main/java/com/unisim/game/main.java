@@ -57,7 +57,13 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Image lectureHallImg;
     Image constructionImg;
 
-    ImageButton accomodationButton;
+    Label accomCounter;
+    Label clubCounter;
+    Label foodCounter;
+    Label gymCounter;
+    Label lectureCounter;
+
+    ImageButton accommodationButton;
     ImageButton clubButton;
     ImageButton foodHallButton;
     ImageButton gymButton;
@@ -150,11 +156,18 @@ public class main extends ApplicationAdapter implements InputProcessor {
         lectureHallImg = new Image(new Texture(Gdx.files.internal("lecture hall.png")));
         constructionImg = new Image(new Texture(Gdx.files.internal("Construction.png")));
 
-        Label accomCounter = new Label("0", skin);
-        Label clubCounter = new Label("0", skin);
-        Label foodCounter = new Label("0", skin);
-        Label gymCounter = new Label("0", skin);
-        Label lectureCounter = new Label("0", skin);
+        accommodationButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Accommodation.png")))));
+        clubButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Club.png")))));
+        foodHallButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Food Hall.png")))));
+        gymButton = new ImageButton(new TextureRegionDrawable(new Texture(Gdx.files.internal("Gym.png"))));
+        lectureHallButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Lecture hall.png")))));
+
+
+        accomCounter = new Label("0", skin);
+        clubCounter = new Label("0", skin);
+        foodCounter = new Label("0", skin);
+        gymCounter = new Label("0", skin);
+        lectureCounter = new Label("0", skin);
 
         buildingsTable = new Table();
         int cellW = 100;
@@ -163,19 +176,19 @@ public class main extends ApplicationAdapter implements InputProcessor {
         buildingsTable.add(buildingsLabel);
         buildingsTable.add(counterLabel);
         buildingsTable.row();
-        buildingsTable.add(accommodationImg).width(cellW).height(cellH);
+        buildingsTable.add(accommodationButton).width(cellW).height(cellH);
         buildingsTable.add(accomCounter);
         buildingsTable.row();
-        buildingsTable.add(clubImg).width(cellW).height(cellH);
+        buildingsTable.add(clubButton).width(cellW).height(cellH);
         buildingsTable.add(clubCounter);
         buildingsTable.row();
-        buildingsTable.add(foodHallImg).width(cellW).height(cellH);
+        buildingsTable.add(foodHallButton).width(cellW).height(cellH);
         buildingsTable.add(foodCounter);
         buildingsTable.row();
-        buildingsTable.add(gymImg).width(cellW).height(cellH);
+        buildingsTable.add(gymButton).width(cellW).height(cellH);
         buildingsTable.add(gymCounter);
         buildingsTable.row();
-        buildingsTable.add(lectureHallImg).width(cellW).height(cellH);
+        buildingsTable.add(lectureHallButton).width(cellW).height(cellH);
         buildingsTable.add(lectureCounter);
 
         // https://stackoverflow.com/questions/39081993/libgdx-scene2d-set-background-color-of-table
@@ -249,7 +262,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         switch(sceneId){
             case 0:
-                Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
                 Gdx.input.setInputProcessor(menuStage);
                 //if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                   //  if (());
@@ -276,6 +289,19 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 break;
             case 1:
                 Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                Gdx.input.setInputProcessor(mainStage);
+
+                accommodationButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        String newValue = String.valueOf(Integer.parseInt(accomCounter.getText().toString()) + 1);
+                        //Character value = (char)(newValue);
+                        accomCounter.setText(newValue);
+                        accomCounter.getText();
+                    }
+                });
+
+                mainStage.act(Gdx.graphics.getDeltaTime());
                 mainStage.draw();
                 break;
         }
