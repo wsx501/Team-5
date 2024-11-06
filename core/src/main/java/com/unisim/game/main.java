@@ -208,7 +208,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
         clubButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                clubCounter.setText(String.valueOf(Integer.parseInt(clubCounter.getText().toString()) + 1));
+                //clubCounter.setText(String.valueOf(Integer.parseInt(clubCounter.getText().toString()) + 1));
+                sceneId = 0;
             }
         });
 
