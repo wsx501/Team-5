@@ -1,5 +1,6 @@
 package com.unisim.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -34,6 +35,7 @@ public class MainMenuScreen implements Screen {
 
         menuStage = new Stage();
 
+        skin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
         TextButton playButton = new TextButton("Play", skin, "default");
         playButton.setWidth(200f);
         playButton.setHeight(20f);

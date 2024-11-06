@@ -1,7 +1,6 @@
 package com.unisim.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,9 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class main extends Game implements InputProcessor {
+public class main extends ApplicationAdapter implements InputProcessor {
     //private SpriteBatch batch;
     //private Texture image;
 
@@ -30,9 +31,10 @@ public class main extends Game implements InputProcessor {
     Stage menuStage;
     Stage mainStage;
 
-    TextButton playButton;
+    TextButton testButton;
     TextButton.TextButtonStyle playButtonStyle;
     BitmapFont font;
+    Viewport viewport;
     Skin skin;
     TextureAtlas buttonAtlas;
 
@@ -62,6 +64,9 @@ public class main extends Game implements InputProcessor {
         camera.translate(-300f, 0f);
         camera.update();
 
+        //font.setUseIntegerPositions(false);
+        //font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
+
         menuStage = new Stage();
         MenuButton playButton = new MenuButton("buttons/Play Button.png",0, 0, 0.5f);
         playButton.setPosition(Gdx.graphics.getWidth()/2f - playButton.getWidth() / 2,
@@ -79,17 +84,17 @@ public class main extends Game implements InputProcessor {
         testBatch = new SpriteBatch();
         testSkin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
 
-        TextButton testButton = new TextButton("Play", testSkin, "default");
+        testButton = new TextButton("Play", testSkin, "default");
         testButton.setWidth(200f);
         testButton.setHeight(20f);
         testButton.setPosition(Gdx.graphics.getWidth() / 2 - 100f, Gdx.graphics.getHeight() / 2 - 200f);
 
-        testButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                testButton.setText("you've clicked the button.");
-            }
-        });
+//        testButton.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                testButton.setText("you've clicked the button.");
+//            }
+//        });
 
         menuStage.addActor(testButton);
 
@@ -161,6 +166,14 @@ public class main extends Game implements InputProcessor {
                 //if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                   //  if (());
                 //}
+
+                testButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        testButton.setText("you've clicked the button.");
+                        sceneId = 1;
+                    }
+                });
 
                 menuStage.act(Gdx.graphics.getDeltaTime());
                 testBatch.begin(); // to remove
