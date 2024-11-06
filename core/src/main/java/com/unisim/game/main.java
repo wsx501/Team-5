@@ -5,17 +5,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.util.TimerTask;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class main extends ApplicationAdapter implements InputProcessor {
@@ -199,6 +199,19 @@ public class main extends ApplicationAdapter implements InputProcessor {
         backgroundPM.fill();
         buildingsTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(backgroundPM))));
 
+        accommodationButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                accomCounter.setText(String.valueOf(Integer.parseInt(accomCounter.getText().toString()) + 1));
+            }
+        });
+        clubButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                clubCounter.setText(String.valueOf(Integer.parseInt(clubCounter.getText().toString()) + 1));
+            }
+        });
+
         buildingsTable.setPosition(100, Gdx.graphics.getHeight()/2);
         mainStage.addActor(buildingsTable);
 
@@ -290,16 +303,6 @@ public class main extends ApplicationAdapter implements InputProcessor {
             case 1:
                 Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
                 Gdx.input.setInputProcessor(mainStage);
-
-                accommodationButton.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        String newValue = String.valueOf(Integer.parseInt(accomCounter.getText().toString()) + 1);
-                        //Character value = (char)(newValue);
-                        accomCounter.setText(newValue);
-                        accomCounter.getText();
-                    }
-                });
 
                 mainStage.act(Gdx.graphics.getDeltaTime());
                 mainStage.draw();
