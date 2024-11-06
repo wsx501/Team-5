@@ -170,8 +170,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
         lectureCounter = new Label("0", skin);
 
         buildingsTable = new Table();
-        int cellW = 100;
-        int cellH = 100;
+        int cellW = 150;
+        int cellH = 150;
 
         buildingsTable.add(buildingsLabel);
         buildingsTable.add(counterLabel);
