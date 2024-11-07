@@ -25,6 +25,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
     int sceneId = 0;
     Stage menuStage;
     Stage mainStage;
+    Stage pauseStage;
+    Stage tutorialStage;
+    Stage endTimeStage;
 
     //TextButton testButton;
     TextButton.TextButtonStyle playButtonStyle;
@@ -343,6 +346,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         Gdx.input.setInputProcessor(menuStage);
 
+        pauseStage = new Stage();
+        tutorialStage = new Stage();
+        endTimeStage = new Stage();
+
         //colourChangingButton = new MenuButton("buttons/Back Square Button.png",
         //    (Gdx.graphics.getHeight()/2f),
         //    Gdx.graphics.getWidth()/2f,
@@ -434,6 +441,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
                 mainStage.act(Gdx.graphics.getDeltaTime());
                 mainStage.draw();
+                break;
+            case 2:
+
                 break;
         }
     }
