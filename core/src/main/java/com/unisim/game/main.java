@@ -57,6 +57,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Image lectureHallImg;
     Image constructionImg;
 
+    Image mainMenuText;
+
+
 //    Label accomCounter;
 //    Label clubCounter;
 //    Label foodCounter;
@@ -136,11 +139,31 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //            }
 //        });
 
+
+        Image PauseMenuText;
+        Image TutorialText;
+
         // play button on menu stage
         playImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Play Button.png")))));
-        playImgButton.setPosition(Gdx.graphics.getWidth()/2 - playImgButton.getWidth() / 2,
-                                  Gdx.graphics.getHeight()/2f - 50f);
-        menuStage.addActor(playImgButton);
+        //playImgButton.setPosition(Gdx.graphics.getWidth()/2 - playImgButton.getWidth() / 2,
+        //                          Gdx.graphics.getHeight()/2f - 50f);
+        playImgButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sceneId = 1;
+            }
+        });
+
+        mainMenuText = new Image(new Texture(Gdx.files.internal("text/Home Text.png")));
+
+        Table mainMenuTable = new Table();
+        mainMenuTable.add(mainMenuText).width(700f).height(300f);
+        mainMenuTable.row();
+        mainMenuTable.add(playImgButton);
+        mainMenuTable.setPosition(Gdx.graphics.getWidth() / 2f - mainMenuTable.getWidth() / 2,
+                                  Gdx.graphics.getHeight()/2f - mainMenuTable.getHeight() / 2);
+
+        menuStage.addActor(mainMenuTable);
 
         testBatch = new SpriteBatch();
         skin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
@@ -449,12 +472,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //                        sceneId = 1;
 //                    }
 //                });
-                playImgButton.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        sceneId = 1;
-                    }
-                });
+
 
                 menuStage.act(Gdx.graphics.getDeltaTime());
                 testBatch.begin(); // to remove
