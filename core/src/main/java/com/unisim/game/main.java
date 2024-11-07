@@ -277,11 +277,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         // https://stackoverflow.com/questions/39081993/libgdx-scene2d-set-background-color-of-table
         // i tried
-        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
-        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
-        backgroundPM.setColor(backgroundColour);
-        backgroundPM.fill();
-        buildingsTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(backgroundPM))));
+//        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
+//        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
+//        backgroundPM.setColor(backgroundColour);
+//        backgroundPM.fill();
+//        buildingsTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(backgroundPM))));
 
         // adding event listeners
         for (int i = 0; i < filepaths.length; i++) {
@@ -313,7 +313,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         // adding pause and tutorial buttons
         // new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(filepaths[i]))));
         pauseButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Pause Square Button.png")))));
-        tutorialButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Questionmark Square Button.png")))));
+        tutorialButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Question Mark.png")))));
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -387,7 +387,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         tutorialStage = new Stage();
 
-        backButtonTM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Back Square Button.png")))));
+        backButtonTM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Back Button.png")))));
         backButtonTM.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
