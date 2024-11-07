@@ -133,7 +133,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         // play button on menu stage
         playImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Play Button.png")))));
         playImgButton.setPosition(Gdx.graphics.getWidth()/2 - playImgButton.getWidth() / 2,
-                                  Gdx.graphics.getHeight()/2f - 50f);
+                                  Gdx.graphics.getHeight()/2f - 350f);
         menuStage.addActor(playImgButton);
 
         testBatch = new SpriteBatch();
