@@ -389,8 +389,14 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         LandPlot gb1;
         gb1 = new LandPlot(2, 200, 200, 300, 100);
-        gb1.setBuilding(buildingTypes[0].deepCopy());
+        //gb1.setBuilding(buildingTypes[0].deepCopy());
+        gb1.button.setBounds(0, 0, 100, 100);
+        gb1.button.setSize(100, 100);
+        gb1.button.setPosition(0,0);
+
+        mainStage.addActor(gb1.image);
         mainStage.addActor(gb1.button);
+        mainStage.addActor(gb1);
 
 
         //table.add(buildingsText).width(100);
