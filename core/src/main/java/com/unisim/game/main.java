@@ -77,6 +77,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
     ImageButton pauseButton;
     ImageButton tutorialButton;
 
+    ImageButton playButtonPM;
+    ImageButton backButtonTM;
+
     int score;
     Label scoreTitleLabel;
     Label scoreTextLabel;
@@ -347,7 +350,31 @@ public class main extends ApplicationAdapter implements InputProcessor {
         Gdx.input.setInputProcessor(menuStage);
 
         pauseStage = new Stage();
+
+        playButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Resume Button.png")))));
+        playButtonPM.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sceneId = 1;
+            }
+        });
+        playButtonPM.setPosition(Gdx.graphics.getWidth() / 2f - playButtonPM.getWidth() / 2,
+                                 Gdx.graphics.getHeight() / 2f - playButtonPM.getHeight() / 2);
+        pauseStage.addActor(playButtonPM);
+
         tutorialStage = new Stage();
+
+        backButtonTM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Back Square Button.png")))));
+        backButtonTM.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sceneId = 1;
+            }
+        });
+        backButtonTM.setPosition(Gdx.graphics.getWidth() / 2f - backButtonTM.getWidth() / 2,
+                                 Gdx.graphics.getHeight() / 2f - backButtonTM.getHeight() / 2);
+        tutorialStage.addActor(backButtonTM);
+
         endTimeStage = new Stage();
 
         //colourChangingButton = new MenuButton("buttons/Back Square Button.png",
@@ -443,7 +470,28 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 mainStage.draw();
                 break;
             case 2:
+                // pause screen
+                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                Gdx.input.setInputProcessor(pauseStage);
 
+                pauseStage.act(Gdx.graphics.getDeltaTime());
+                pauseStage.draw();
+                break;
+            case 3:
+                // tutorial screen
+                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                Gdx.input.setInputProcessor(tutorialStage);
+
+                tutorialStage.act(Gdx.graphics.getDeltaTime());
+                tutorialStage.draw();
+                break;
+            case 4:
+                // end of game screen
+                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                Gdx.input.setInputProcessor(endTimeStage);
+
+                endTimeStage.act(Gdx.graphics.getDeltaTime());
+                endTimeStage.draw();
                 break;
         }
     }
