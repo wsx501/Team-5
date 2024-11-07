@@ -103,7 +103,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Table miscTable;
 
     // filepaths = {"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
-    Building[] buildingTypes = new Building[]{
+    static Building[] buildingTypes = new Building[]{
         new Building("Accommodation.png", 3),
         new Building("Lecture hall.png", 3 ),
         new Building("Food hall.png", 3),
@@ -294,10 +294,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
 //        // https://stackoverflow.com/questions/39081993/libgdx-scene2d-set-background-color-of-table
 //        // i tried
-//        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
-//        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
-//        backgroundPM.setColor(backgroundColour);
-//        backgroundPM.fill();
+        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
+        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
+        backgroundPM.setColor(backgroundColour);
+        backgroundPM.fill();
 
         // adding event listeners
         for (int i = 0; i < filepaths.length; i++) {
@@ -386,6 +386,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
         //buttonsTable.setDebug(true);
         buttonsTable.setPosition(150, Gdx.graphics.getHeight() / 2f);
         mainStage.addActor(buttonsTable);
+
+        LandPlot gb1;
+        gb1 = new LandPlot(2, 200, 200, 300, 100);
+        gb1.setBuilding(buildingTypes[0].deepCopy());
+        mainStage.addActor(gb1.button);
+
 
         //table.add(buildingsText).width(100);
         //table.row();
