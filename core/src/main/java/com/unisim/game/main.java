@@ -90,7 +90,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Label scoreTextLabel;
 
     // to change
-    int time;
+    float time = 300f;
     Label timeTitleLabel;
     Label timeTextLabel;
 
@@ -195,8 +195,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
         mainStage.addActor(new gameMap());
 
         buildingsTitle = new Label("Buildings", skin);
+        buildingsTitle.setFontScale(1.5f);
         buildingsText = new TextField("", skin);
         countersTitle = new Label("Counter", skin);
+        countersTitle.setFontScale(1.5f);
         counterText = new TextField("", skin);
 
         accommodationImg = new Image(new Texture(Gdx.files.internal("Accommodation.png")));
@@ -279,11 +281,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         // https://stackoverflow.com/questions/39081993/libgdx-scene2d-set-background-color-of-table
         // i tried
-//        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
-//        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
-//        backgroundPM.setColor(backgroundColour);
-//        backgroundPM.fill();
-//        buildingsTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(backgroundPM))));
+        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
+        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
+        backgroundPM.setColor(backgroundColour);
+        backgroundPM.fill();
 
         // adding event listeners
         for (int i = 0; i < filepaths.length; i++) {
@@ -298,16 +299,18 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         // adding score table
         scoreTable = new Table();
-        scoreTitleLabel = new Label("score", skin);
+        scoreTitleLabel = new Label("Score", skin);
+        scoreTitleLabel.setFontScale(1.5f);
         scoreTextLabel = new Label(String.valueOf(score), skin);
         scoreTable.add(scoreTitleLabel);
         scoreTable.row();
         scoreTable.add(scoreTextLabel);
 
-        // adding time table
+        // adding timer table
         timerTable = new Table();
-        timeTitleLabel = new Label("time left", skin);
+        timeTitleLabel = new Label("Time Left", skin);
         timeTextLabel = new Label(String.valueOf(time), skin);
+        timeTitleLabel.setFontScale(1.5f);
         timerTable.add(timeTitleLabel);
         timerTable.row();
         timerTable.add(timeTextLabel);
@@ -390,6 +393,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
         pauseMenuTable.add(pauseMenuText).width(700f).height(300f);
         pauseMenuTable.row();
         pauseMenuTable.add(playButtonPM);
+        pauseMenuTable.setPosition(Gdx.graphics.getWidth() / 2f - pauseMenuTable.getWidth() / 2,
+                                   Gdx.graphics.getHeight()/2f - pauseMenuTable.getHeight() / 2);
         pauseStage.addActor(pauseMenuTable);
 
         tutorialStage = new Stage();
@@ -403,7 +408,14 @@ public class main extends ApplicationAdapter implements InputProcessor {
         });
         backButtonTM.setPosition(Gdx.graphics.getWidth() / 2f - backButtonTM.getWidth() / 2,
                                  Gdx.graphics.getHeight() / 2f - backButtonTM.getHeight() / 2);
-        tutorialStage.addActor(backButtonTM);
+        tutorialMenuText = new Image(new Texture(Gdx.files.internal("text/How To Play.png")));
+        Table tutorialMenuTable = new Table();
+        tutorialMenuTable.add(tutorialMenuText).width(1000f).height(700f);
+        tutorialMenuTable.row();
+        tutorialMenuTable.add(backButtonTM);
+        tutorialMenuTable.setPosition(Gdx.graphics.getWidth() / 2f - tutorialMenuTable.getWidth() / 2,
+            Gdx.graphics.getHeight()/2f - tutorialMenuTable.getHeight() / 2);
+        tutorialStage.addActor(tutorialMenuTable);
 
         endTimeStage = new Stage();
 
@@ -492,6 +504,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 Gdx.input.setInputProcessor(mainStage);
 
                 mainStage.act(Gdx.graphics.getDeltaTime());
+                time -= Gdx.graphics.getDeltaTime();
+                if (time < 0) sceneId = 4;
+                timeTextLabel.setText(String.valueOf(Math.round(time)));
                 mainStage.draw();
                 break;
             case 2:
