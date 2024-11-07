@@ -90,7 +90,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Label scoreTextLabel;
 
     // to change
-    float time = 300f;
+    float time = 10f;
     Label timeTitleLabel;
     Label timeTextLabel;
 
@@ -101,6 +101,18 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Table scoreTable;
     Table timerTable;
     Table miscTable;
+
+    // filepaths = {"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
+    Building[] buildingTypes = new Building[]{
+        new Building("Accommodation.png", 3),
+        new Building("Lecture hall.png", 3 ),
+        new Building("Food hall.png", 3),
+        new Building("Gym.png", 2),
+        new Building("Club.png", 2)
+    };
+    // Represents corresponding building types from the selection menu
+    // -1 by default, no building selected
+    public static int selectedBuilding = -1;
 
 //    ImageButton resumeButtonOnPause;
 //    ImageButton resumeButtonOnTutorial;
@@ -140,6 +152,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //                System.out.println("play button pressed");
 //            }
 //        });
+
 
 
         Image PauseMenuText;
@@ -279,12 +292,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //        buildingsTable.add(lectureHallButton).width(cellW).height(cellH);
 //        buildingsTable.add(lectureCounter);
 
-        // https://stackoverflow.com/questions/39081993/libgdx-scene2d-set-background-color-of-table
-        // i tried
-        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
-        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
-        backgroundPM.setColor(backgroundColour);
-        backgroundPM.fill();
+//        // https://stackoverflow.com/questions/39081993/libgdx-scene2d-set-background-color-of-table
+//        // i tried
+//        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
+//        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
+//        backgroundPM.setColor(backgroundColour);
+//        backgroundPM.fill();
 
         // adding event listeners
         for (int i = 0; i < filepaths.length; i++) {
@@ -292,7 +305,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
             buildingButtons[i].addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    buildingCounters[finalI].setText(String.valueOf(Integer.parseInt(buildingCounters[finalI].getText().toString()) + 1));
+                    if (selectedBuilding < 0) {
+                        buildingCounters[finalI].setText(String.valueOf(Integer.parseInt(buildingCounters[finalI].getText().toString()) + 1));
+                        main.selectedBuilding = finalI;
+                    }
                 }
             });
         }
@@ -438,6 +454,14 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         //needs to be removed
         //Gdx.input.setInputProcessor(this);
+
+        endTimeStage = new Stage();
+        Image endTimeText = new Image(new Texture(Gdx.files.internal("text/Time up Text.png")));
+        Table endTimeTable = new Table();
+        endTimeTable.add(endTimeText).width(700f). height(200f);
+        endTimeTable.setPosition(Gdx.graphics.getWidth() / 2f - endTimeTable.getWidth() / 2,
+                                 Gdx.graphics.getHeight() / 2f - endTimeTable.getHeight() / 2);
+        endTimeStage.addActor(endTimeTable);
 
     }
 
