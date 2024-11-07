@@ -58,6 +58,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Image constructionImg;
 
     Image mainMenuText;
+    Image pauseMenuText;
+    Image tutorialMenuText;
 
 
 //    Label accomCounter;
@@ -100,8 +102,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Table timerTable;
     Table miscTable;
 
-    ImageButton resumeButtonOnPause;
-    ImageButton resumeButtonOnTutorial;
+//    ImageButton resumeButtonOnPause;
+//    ImageButton resumeButtonOnTutorial;
 
     @Override
     public void create() {
@@ -383,7 +385,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
         });
         playButtonPM.setPosition(Gdx.graphics.getWidth() / 2f - playButtonPM.getWidth() / 2,
                                  Gdx.graphics.getHeight() / 2f - playButtonPM.getHeight() / 2);
-        pauseStage.addActor(playButtonPM);
+        pauseMenuText = new Image(new Texture(Gdx.files.internal("text/Paused Text.png")));
+        Table pauseMenuTable = new Table();
+        pauseMenuTable.add(pauseMenuText).width(700f).height(300f);
+        pauseMenuTable.row();
+        pauseMenuTable.add(playButtonPM);
+        pauseStage.addActor(pauseMenuTable);
 
         tutorialStage = new Stage();
 
