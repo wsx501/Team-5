@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.tools.javac.Main;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class main extends ApplicationAdapter implements InputProcessor {
@@ -434,6 +435,14 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         pauseStage = new Stage();
 
+        ImageButton quitButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Back Button.png")))));
+        quitButtonPM.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.exit(0);
+            }
+        });
+
         playButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Resume Button.png")))));
         playButtonPM.addListener(new ClickListener() {
             @Override
@@ -448,6 +457,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
         pauseMenuTable.add(pauseMenuText).width(700f).height(300f);
         pauseMenuTable.row();
         pauseMenuTable.add(playButtonPM);
+        pauseMenuTable.row();
+        pauseMenuTable.add(quitButtonPM);
         pauseMenuTable.setPosition(Gdx.graphics.getWidth() / 2f - pauseMenuTable.getWidth() / 2,
                                    Gdx.graphics.getHeight()/2f - pauseMenuTable.getHeight() / 2);
         pauseStage.addActor(pauseMenuTable);
