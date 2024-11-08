@@ -12,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.awt.font.ImageGraphicAttribute;
-
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class main extends ApplicationAdapter implements InputProcessor {
     //private SpriteBatch batch;
@@ -90,7 +88,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Label scoreTextLabel;
 
     // to change
-    float time = 10f;
+    float time = 300f;
     Label timeTitleLabel;
     Label timeTextLabel;
 
@@ -101,6 +99,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Table scoreTable;
     Table timerTable;
     Table miscTable;
+
+    LandPlot[] landPlots;
 
     // filepaths = {"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
     static Building[] buildingTypes = new Building[]{
@@ -387,16 +387,43 @@ public class main extends ApplicationAdapter implements InputProcessor {
         buttonsTable.setPosition(150, Gdx.graphics.getHeight() / 2f);
         mainStage.addActor(buttonsTable);
 
-        LandPlot gb1;
-        gb1 = new LandPlot(2, 200, 200, 300, 100);
-        //gb1.setBuilding(buildingTypes[0].deepCopy());
-        gb1.button.setBounds(0, 0, 100, 100);
-        gb1.button.setSize(100, 100);
-        gb1.button.setPosition(0,0);
+//        LandPlot gb1;
+//        gb1 = new LandPlot(2, 200, 200, 100, 100);
+////        gb1.setBuilding(buildingTypes[0].deepCopy());
+////        gb1.button.setBounds(0, 0, 100, 100);
+////        gb1.button.setSize(100, 100);
+////        gb1.button.setPosition(0,0);
+//        mainStage.addActor(gb1.image);
+//        mainStage.addActor(gb1.button);
+//        mainStage.addActor(gb1);
 
-        mainStage.addActor(gb1.image);
-        mainStage.addActor(gb1.button);
-        mainStage.addActor(gb1);
+        int pxpt = 40;
+        int size2 = pxpt * 2;
+        int size3 = pxpt * 3;
+        int tilePX = 41;
+        int bw = 360;
+
+
+        landPlots = new LandPlot[9];
+        landPlots[0] = new LandPlot(2, bw + (int)(8.5 * pxpt), 2 * pxpt, size2, size2);
+        landPlots[1] = new LandPlot(2, bw + (int)(3.5 * pxpt), 2 * pxpt, size2, size2);
+        landPlots[2] = new LandPlot(3, bw + 3 * pxpt, (int)(5.5 * pxpt), size3, size3);
+        landPlots[3] = new LandPlot(3, bw + 3 * pxpt, (int)(8.6 * pxpt), size3, size3);
+        landPlots[4] = new LandPlot(3, bw + (int)(12.5 * pxpt), (13 * pxpt), size3, size3);
+        landPlots[5] = new LandPlot(3, bw + (int)(16.7 * pxpt), (11 * pxpt), size3, size3);
+        landPlots[6] = new LandPlot(3, bw + (int)(20.7 * pxpt), 11 * pxpt, size3, size3);
+        landPlots[7] = new LandPlot(3, bw + (int)(24.2 * pxpt), 11 * pxpt, size3, size3);
+        landPlots[8] = new LandPlot(2, bw + 24 * pxpt, (int)(6.5 * pxpt), size2, size2);
+
+
+
+        for (LandPlot landPlot : landPlots) {
+
+            mainStage.addActor(landPlot.image);
+            mainStage.addActor(landPlot.button);
+            mainStage.addActor(landPlot);
+
+        }
 
 
         //table.add(buildingsText).width(100);

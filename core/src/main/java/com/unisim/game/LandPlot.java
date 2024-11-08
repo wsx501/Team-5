@@ -1,6 +1,8 @@
 package com.unisim.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.graphics.Color;
@@ -52,6 +54,28 @@ public class LandPlot extends Actor {
         image = new Image(new TextureRegionDrawable(new TextureRegion(seeThroughTexture)));
         image.setTouchable(Touchable.disabled);
 
+//        final int[] finalX = {x, y};
+//        button.addListener(new InputListener() {
+//            @Override
+//            public boolean keyDown(InputEvent event, int keycode) {
+//                if (keycode == Keys.RIGHT) {
+//                    finalX[0] += 1;
+//                }
+//                if (keycode == Keys.UP) {
+//                    finalX[1] += 1;
+//                }
+//                return true;
+//            }
+//        });
+//        x = finalX[0];
+//        y = finalX[1];
+
+        button.setPosition(x, y);
+        button.setSize(width, height);
+        button.setBounds(x, y, width, height);
+        image.setPosition(x, y);
+        image.setSize(width, height);
+
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -71,6 +95,8 @@ public class LandPlot extends Actor {
     public void act(float delta) {
 
         super.act(delta);
+        //image.setPosition(x, y);
+        //image.setSize(width,width);
         if (main.selectedBuilding > -1 && !isOccupied()) {
             if (main.buildingTypes[main.selectedBuilding].getSize() <= maxSize) {
                 // needs to green
