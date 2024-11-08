@@ -89,7 +89,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Label scoreTextLabel;
 
     // to change
-    float time = 300f;
+    float time = 10f;
     Label timeTitleLabel;
     Label timeTextLabel;
 
@@ -435,7 +435,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         pauseStage = new Stage();
 
-        ImageButton quitButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Back Button.png")))));
+        ImageButton quitButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Quit.png")))));
         quitButtonPM.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -483,7 +483,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
             Gdx.graphics.getHeight()/2f - tutorialMenuTable.getHeight() / 2);
         tutorialStage.addActor(tutorialMenuTable);
 
-        endTimeStage = new Stage();
+        //endTimeStage = new Stage();
 
         //colourChangingButton = new MenuButton("buttons/Back Square Button.png",
         //    (Gdx.graphics.getHeight()/2f),
@@ -507,8 +507,17 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         endTimeStage = new Stage();
         Image endTimeText = new Image(new Texture(Gdx.files.internal("text/Time up Text.png")));
+        ImageButton quitButtonTS = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("buttons/Quit.png"))));
+        quitButtonTS.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.exit(0);
+            }
+        });
         Table endTimeTable = new Table();
         endTimeTable.add(endTimeText).width(700f). height(200f);
+        endTimeTable.row();
+        endTimeTable.add(quitButtonTS);
         endTimeTable.setPosition(Gdx.graphics.getWidth() / 2f - endTimeTable.getWidth() / 2,
                                  Gdx.graphics.getHeight() / 2f - endTimeTable.getHeight() / 2);
         endTimeStage.addActor(endTimeTable);
