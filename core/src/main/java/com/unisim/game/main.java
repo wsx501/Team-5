@@ -24,7 +24,6 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Stage tutorialStage;
     Stage endTimeStage;
 
-    SpriteBatch testBatch;
     Skin skin;
 
     ImageButton playImgButton;
@@ -65,7 +64,6 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
     LandPlot[] landPlots;
 
-    // filepaths = {"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
     static Building[] buildingTypes = new Building[]{
         new Building("Accommodation.png", 3),
         new Building("Lecture hall.png", 3 ),
@@ -83,9 +81,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void create() {
+
+        // Variables to change size of camera.
         float w = 1260;
         float h = 640;
 
+        // Sets up camera.
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
         camera.translate(-300f, 0f);
@@ -116,7 +117,6 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         menuStage.addActor(mainMenuTable);
 
-        testBatch = new SpriteBatch();
         skin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
 
         mainStage = new Stage();
@@ -351,9 +351,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(menuStage);
                 menuStage.act(Gdx.graphics.getDeltaTime());
-                testBatch.begin(); // to remove
                 menuStage.draw();
-                testBatch.end(); // to remove
                 break;
             case 1:
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);

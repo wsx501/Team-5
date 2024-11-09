@@ -53,22 +53,6 @@ public class LandPlot extends Actor {
         image = new Image(new TextureRegionDrawable(new TextureRegion(seeThroughTexture)));
         image.setTouchable(Touchable.disabled);
 
-//        final int[] finalX = {x, y};
-//        button.addListener(new InputListener() {
-//            @Override
-//            public boolean keyDown(InputEvent event, int keycode) {
-//                if (keycode == Keys.RIGHT) {
-//                    finalX[0] += 1;
-//                }
-//                if (keycode == Keys.UP) {
-//                    finalX[1] += 1;
-//                }
-//                return true;
-//            }
-//        });
-//        x = finalX[0];
-//        y = finalX[1];
-
         button.setPosition(x, y);
         button.setSize(width, height);
         button.setBounds(x, y, width, height);
@@ -83,11 +67,11 @@ public class LandPlot extends Actor {
                 if (main.selectedBuilding > -1
                     && !isOccupied()
                     && main.buildingTypes[main.selectedBuilding].getSize() <= maxSize)  {
-                    // Setting the building of the LandPlot, and the texture needed for the image.
+                    // Sets the building of the LandPlot, and the texture needed for the image.
                     buildingPlaced = main.buildingTypes[main.selectedBuilding].deepCopy();
                     imageTexture = new Texture(Gdx.files.internal(buildingPlaced.getName()));
 
-                    // Disabling the state of a building being selected for placement.
+                    // Disables the state of a building being selected for placement.
                     main.selectedBuilding = -1;
                     setOccupied();
                 }
@@ -99,38 +83,26 @@ public class LandPlot extends Actor {
     public void act(float delta) {
 
         super.act(delta);
-        //image.setPosition(x, y);
-        //image.setSize(width,width);
 
         // If the LandPlot doesn't contain a building, and a building has been selected for placement.
         if (main.selectedBuilding > -1 && !isOccupied()) {
             // If the building selected is within size constraints.
             if (main.buildingTypes[main.selectedBuilding].getSize() <= maxSize) {
-                // needs to go green
                 image.setDrawable(new TextureRegionDrawable(new TextureRegion(greenTexture)));
-
             }
             else {
-                // needs to go red
                 image.setDrawable(new TextureRegionDrawable(new TextureRegion(redTexture)));
             }
         }
         // If the LandPlot contains a building.
         else if (isOccupied()) {
-            // show building
             image.setDrawable(new TextureRegionDrawable(new TextureRegion(imageTexture)));
         }
         // If the LandPlot is empty, and there is no building selected for placement.
         else {
-            // show nothing
             image.setDrawable(new TextureRegionDrawable(new TextureRegion(seeThroughTexture)));
         }
-        // otherwise : has a building placed
     }
-
-//    public void setBuilding(Building buildingPlaced) {
-//        this.buildingPlaced = buildingPlaced;
-//    }
 
     public void setOccupied() {
         occupied = true;
@@ -139,27 +111,4 @@ public class LandPlot extends Actor {
     public boolean isOccupied() {
         return occupied;
     }
-
-
-//    public int getMaxSize() {
-//        return maxSize;
-//    }
-//
-//    public int getX() {
-//        return x;
-//    }
-//
-//    public int getY() {
-//        return y;
-//    }
-//
-//    public int getWidth() {
-//        return width;
-//    }
-//
-//    public int getHeight() {
-//        return height;
-//    }
-
-
 }
