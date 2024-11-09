@@ -17,53 +17,83 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
     public static OrthographicCamera camera;
 
+    /**Represents the current scene.*/
     int sceneId = 0;
+
+    // Stages that represent different parts of the game
+
+    /**The stage for the menu displayed at the start of the game.*/
     Stage menuStage;
+    /**The stage where the player plays the game.*/
     Stage mainStage;
+    /**The stage for when the game is paused.*/
     Stage pauseStage;
+    /**The stage to show the player the tutorial.*/
     Stage tutorialStage;
+    /**The stage that shows when the timer is up and the game is finished.*/
     Stage endTimeStage;
 
     Skin skin;
 
+    /**The button on the main menu that takes the player to the game stage.*/
     ImageButton playImgButton;
 
-    Label buildingsTitle;
-    Label countersTitle;
+    // Labels and buttons on the main stage.
 
-    Image mainMenuText;
-    Image pauseMenuText;
-    Image tutorialMenuText;
-
+    /**The labels that show how many instances of each building have been placed.*/
     Label[] buildingCounters;
+    /**The labels for the names of the buildings.*/
     Label[] buildingLabels;
+    /**The buttons that allow the user to select/deselect a building to place.*/
     ImageButton[] buildingButtons;
 
+    // Buttons on the main stage for navigation.
+
+    /**Takes the player to {@code pauseStage} from {@code mainStage}.*/
     ImageButton pauseButton;
+    /**Takes the player to {@code tutorialStage} from {@code mainStage}.*/
     ImageButton tutorialButton;
 
+    // Buttons on the pause and tutorial stages for navigation.
+
+    /**Takes the player to {@code mainStage} from {@code pauseStage}.*/
     ImageButton playButtonPM;
+    /**Takes the player to {@code mainStage} from {@code tutorialStage}.*/
     ImageButton backButtonTM;
 
+    // Attributes for the display and behaviour of the score and timer.
+
+    /**The score achieved by the player.*/
     int score;
-    Label scoreTitleLabel;
+    /**Handles the display of {@code score}.*/
     Label scoreTextLabel;
 
+    /**The time left for game play.*/
     float time = 300f;
-    Label timeTitleLabel;
+    /**Handles the display of {@code time}.*/
     Label timeTextLabel;
 
+    // Attributes for the background colour of the game.
+
+    /**The background colour used for all stages.*/
     Color mainColour;
+    /**Controls the background colour given by {@code mainColour}.*/
     ShapeRenderer backgroundColourSR;
 
-    Table buildingsTable;
-    Table buttonsTable;
-    Table scoreTable;
-    Table timerTable;
-    Table miscTable;
+    // Main tables for the layout of mainStage.
 
+    /**Contains the buttons for selection/deselection of which building to place. Also contains the labels.*/
+    Table buildingsTable;
+    /**Contains the score and timer displays, and the pause and tutorial buttons.*/
+    Table miscTable;
+    /**The main table for {@code mainStage}, contains {@code buildingsTable} and {@code miscTable}.*/
+    Table buttonsTable;
+
+    /**Contains the {@link LandPlot} for building placement on the map.*/
     LandPlot[] landPlots;
 
+    /**The default types of {@link Building} that are deep copied when a {@link Building} is associated with a specific
+     * {@link LandPlot}.*/
     static Building[] buildingTypes = new Building[]{
         new Building("Accommodation.png", 3),
         new Building("Lecture hall.png", 3 ),
@@ -71,13 +101,13 @@ public class main extends ApplicationAdapter implements InputProcessor {
         new Building("Gym.png", 2),
         new Building("Club.png", 2)
     };
-    // Represents corresponding building types from the selection menu
-    // -1 by default, no building selected
+
+    /**Represents which {@link Building} from {@code buildingTypes} has been selected for placement. -1 by default when
+     * nothing is selected.*/
     public static int selectedBuilding = -1;
 
-    Image buildingImage;
-
-    String[] filepaths;
+    /**The file paths for each different type of building.*/
+    String[] filePaths;
 
     @Override
     public void create() {
@@ -106,7 +136,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
             }
         });
 
-        mainMenuText = new Image(new Texture(Gdx.files.internal("text/Home Text.png")));
+        Image mainMenuText = new Image(new Texture(Gdx.files.internal("text/Home Text.png")));
 
         Table mainMenuTable = new Table();
         mainMenuTable.add(mainMenuText).width(700f).height(300f);
@@ -122,31 +152,34 @@ public class main extends ApplicationAdapter implements InputProcessor {
         mainStage = new Stage();
         mainStage.addActor(new GameMap());
 
-        buildingsTitle = new Label("Buildings", skin);
+        Label buildingsTitle = new Label("Buildings", skin);
         buildingsTitle.setFontScale(1.5f);
-        countersTitle = new Label("Counter", skin);
+        Label countersTitle = new Label("Counter", skin);
         countersTitle.setFontScale(1.5f);
 
-        buildingImage = new Image(new Texture(Gdx.files.internal("textures/see through.png")));
+        filePaths = new String[5];
+            //{"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
 
-        filepaths = new String[]{"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
+        for (int i = 0; i < filePaths.length; i++) {
+            filePaths[i] = buildingTypes[i].getName();
+        }
 
         // adding buttons for each building type
         buildingButtons = new ImageButton[5];
-        for (int i = 0; i < filepaths.length; i++) {
-            buildingButtons[i] = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(filepaths[i]))));
+        for (int i = 0; i < filePaths.length; i++) {
+            buildingButtons[i] = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(filePaths[i]))));
         }
 
         // adding counters for each building type
         buildingCounters = new Label[5];
-        for (int i = 0; i < filepaths.length; i++) {
+        for (int i = 0; i < filePaths.length; i++) {
             buildingCounters[i] = new Label("0", skin);
         }
 
         // adding labels for each building type
         buildingLabels = new Label[5];
-        for (int i = 0; i < filepaths.length; i++) {
-            String buildingLabel = filepaths[i];
+        for (int i = 0; i < filePaths.length; i++) {
+            String buildingLabel = filePaths[i];
             buildingLabel = buildingLabel.substring(0, buildingLabel.length()-4);
             buildingLabels[i] = new Label(buildingLabel, skin);
         }
@@ -167,7 +200,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         }
 
         // adding event listeners
-        for (int i = 0; i < filepaths.length; i++) {
+        for (int i = 0; i < filePaths.length; i++) {
             int finalI = i;
             buildingButtons[i].addListener(new ClickListener() {
                 @Override
@@ -188,8 +221,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
         }
 
         // adding score table
-        scoreTable = new Table();
-        scoreTitleLabel = new Label("Score", skin);
+        Table scoreTable = new Table();
+        Label scoreTitleLabel = new Label("Score", skin);
         scoreTitleLabel.setFontScale(1.5f);
         scoreTextLabel = new Label(String.valueOf(score), skin);
         scoreTable.add(scoreTitleLabel);
@@ -197,8 +230,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
         scoreTable.add(scoreTextLabel);
 
         // adding timer table
-        timerTable = new Table();
-        timeTitleLabel = new Label("Time Left", skin);
+        Table timerTable = new Table();
+        Label timeTitleLabel = new Label("Time Left", skin);
         timeTextLabel = new Label(String.valueOf(time), skin);
         timeTitleLabel.setFontScale(1.5f);
         timerTable.add(timeTitleLabel);
@@ -284,7 +317,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         });
         playButtonPM.setPosition(Gdx.graphics.getWidth() / 2f - playButtonPM.getWidth() / 2,
                                  Gdx.graphics.getHeight() / 2f - playButtonPM.getHeight() / 2);
-        pauseMenuText = new Image(new Texture(Gdx.files.internal("text/Paused Text.png")));
+        Image pauseMenuText = new Image(new Texture(Gdx.files.internal("text/Paused Text.png")));
         Table pauseMenuTable = new Table();
         pauseMenuTable.add(pauseMenuText).width(700f).height(300f);
         pauseMenuTable.row();
@@ -306,9 +339,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
         });
         backButtonTM.setPosition(Gdx.graphics.getWidth() / 2f - backButtonTM.getWidth() / 2,
                                  Gdx.graphics.getHeight() / 2f - backButtonTM.getHeight() / 2);
-        tutorialMenuText = new Image(new Texture(Gdx.files.internal("text/How To Play.png")));
+        Image tutorialMenuText = new Image(new Texture(Gdx.files.internal("text/How To Play.png")));
         Table tutorialMenuTable = new Table();
-        tutorialMenuTable.add(tutorialMenuText).width(1000f).height(700f);
+        tutorialMenuTable.add(tutorialMenuText).width(1200f).height(700f);
         tutorialMenuTable.row();
         tutorialMenuTable.add(backButtonTM);
         tutorialMenuTable.setPosition(Gdx.graphics.getWidth() / 2f - tutorialMenuTable.getWidth() / 2,
