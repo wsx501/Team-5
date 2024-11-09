@@ -122,12 +122,15 @@ public class main extends ApplicationAdapter implements InputProcessor {
         camera.translate(-300f, 0f);
         camera.update();
 
+        // Sets up background colour for stages.
         mainColour = new Color(0f, 0.23f, 0.17f, 1f);
         backgroundColourSR = new ShapeRenderer();
 
+        // Sets up menuStage and buttons on it.
+
         menuStage = new Stage();
 
-        // play button on menu stage
+        // Sets up "play" button on menuStage.
         playImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Play Button.png")))));
         playImgButton.addListener(new ClickListener() {
             @Override
@@ -136,8 +139,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
             }
         });
 
+        // Sets up text on menuStage.
         Image mainMenuText = new Image(new Texture(Gdx.files.internal("text/Home Text.png")));
 
+        // Formats buttons and text on menuStage.
         Table mainMenuTable = new Table();
         mainMenuTable.add(mainMenuText).width(700f).height(300f);
         mainMenuTable.row();
@@ -147,36 +152,39 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         menuStage.addActor(mainMenuTable);
 
+        // Sets up skin for labels on mainStage
         skin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
+
+        // Sets up mainStage
 
         mainStage = new Stage();
         mainStage.addActor(new GameMap());
 
+        // Sets up labels for buildings and counter columns
         Label buildingsTitle = new Label("Buildings", skin);
         buildingsTitle.setFontScale(1.5f);
         Label countersTitle = new Label("Counter", skin);
         countersTitle.setFontScale(1.5f);
 
+        // Creates filepath array using buildingTypes.
         filePaths = new String[5];
-            //{"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
-
         for (int i = 0; i < filePaths.length; i++) {
             filePaths[i] = buildingTypes[i].getName();
         }
 
-        // adding buttons for each building type
+        // Sets up buttons for building selection/deselection.
         buildingButtons = new ImageButton[5];
         for (int i = 0; i < filePaths.length; i++) {
             buildingButtons[i] = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(filePaths[i]))));
         }
 
-        // adding counters for each building type
+        // Sets up counters describing the number of each building type placed.
         buildingCounters = new Label[5];
         for (int i = 0; i < filePaths.length; i++) {
             buildingCounters[i] = new Label("0", skin);
         }
 
-        // adding labels for each building type
+        // Sets up labels for each building type.
         buildingLabels = new Label[5];
         for (int i = 0; i < filePaths.length; i++) {
             String buildingLabel = filePaths[i];
@@ -184,12 +192,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
             buildingLabels[i] = new Label(buildingLabel, skin);
         }
 
+        // Helps to format mainStage.
         buildingsTable = new Table();
-
         buildingsTable.add(buildingsTitle);
         buildingsTable.add(countersTitle);
 
-        // adding buttons and counters to table
+        // Formats buttons and counters on mainStage.
         int cellD = 110;
         for (int i = 0; i < buildingCounters.length; i++) {
             buildingsTable.row();
@@ -199,28 +207,28 @@ public class main extends ApplicationAdapter implements InputProcessor {
             buildingsTable.add(buildingLabels[i]).width(cellD).height(20);
         }
 
-        // adding event listeners
+        // Adds event listeners to buttons.
         for (int i = 0; i < filePaths.length; i++) {
             int finalI = i;
             buildingButtons[i].addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    // If there is no currently selected building, the player can select a building.
                     if (selectedBuilding < 0) {
                         buildingCounters[finalI].setText(String.valueOf(Integer.parseInt(buildingCounters[finalI].getText().toString()) + 1));
                         main.selectedBuilding = finalI;
                     }
-                    else if (selectedBuilding == finalI){
-                        buildingCounters[finalI].setText(String.valueOf(Integer.parseInt(buildingCounters[finalI].getText().toString()) + - 1));
+                    // The player can deselect the currently selected building.
+                    else if (selectedBuilding == finalI) {
+                        buildingCounters[finalI].setText(String.valueOf(Integer.parseInt(buildingCounters[finalI].getText().toString()) + -1));
                         main.selectedBuilding = -1;
 
                     }
                 }
-
             });
-
         }
 
-        // adding score table
+        // Sets up, formats and adds score to mainStage.
         Table scoreTable = new Table();
         Label scoreTitleLabel = new Label("Score", skin);
         scoreTitleLabel.setFontScale(1.5f);
@@ -229,7 +237,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         scoreTable.row();
         scoreTable.add(scoreTextLabel);
 
-        // adding timer table
+        // Sets up, formats and adss timer to mainStage.
         Table timerTable = new Table();
         Label timeTitleLabel = new Label("Time Left", skin);
         timeTextLabel = new Label(String.valueOf(time), skin);
@@ -238,24 +246,26 @@ public class main extends ApplicationAdapter implements InputProcessor {
         timerTable.row();
         timerTable.add(timeTextLabel);
 
-        // adding pause and tutorial buttons
+        // Sets up pause and tutorial buttons.
         pauseButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Pause Square Button.png")))));
         tutorialButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Question Mark.png")))));
+        // Sets up listeners for the buttons, so the player can navigate between stages.
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // changing scene to pause screen
+                // Moves player to pauseStage.
                 sceneId = 2;
             }
         });
         tutorialButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // changing scene to tutorial screen
+                // Moves player to tutorialStage.
                 sceneId = 3;
             }
         });
 
+        // Formats mainStage
 
         miscTable = new Table();
         miscTable.add(pauseButton);
@@ -269,16 +279,17 @@ public class main extends ApplicationAdapter implements InputProcessor {
         buttonsTable.row();
         buttonsTable.add(buildingsTable);
 
-
-        //buttonsTable.setDebug(true);
         buttonsTable.setPosition(150, Gdx.graphics.getHeight() / 2f);
         mainStage.addActor(buttonsTable);
 
-        int pxpt = 40;
+        // Sets up the LandPlots for building placement.
+
+        int pxpt = 40; // The number of pixels per tile on the tilemap.
         int size2 = pxpt * 2;
         int size3 = pxpt * 3;
-        int bw = 360;
+        int bw = 360; // The gap before the tilemap that the building buttons sit in.
 
+        // Sets up LandPlots correct placements regarding the tilemap.
         landPlots = new LandPlot[9];
         landPlots[0] = new LandPlot(2, bw + (int)(8.5 * pxpt), 2 * pxpt, size2, size2);
         landPlots[1] = new LandPlot(2, bw + (int)(3.5 * pxpt), 2 * pxpt, size2, size2);
@@ -290,6 +301,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         landPlots[7] = new LandPlot(3, bw + (int)(24.2 * pxpt), 11 * pxpt, size3, size3);
         landPlots[8] = new LandPlot(2, bw + 24 * pxpt, (int)(6.5 * pxpt), size2, size2);
 
+        // Adds the LandPlot components to mainStage.
         for (LandPlot landPlot : landPlots) {
             mainStage.addActor(landPlot.image);
             mainStage.addActor(landPlot.button);
@@ -298,8 +310,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         Gdx.input.setInputProcessor(menuStage);
 
+        // Sets up pauseStage.
+
         pauseStage = new Stage();
 
+        // Sets up the "quit" button on pauseStage allowing the user to exit the application.
         ImageButton quitButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Quit.png")))));
         quitButtonPM.addListener(new ClickListener() {
             @Override
@@ -308,6 +323,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
             }
         });
 
+        // Sets up the "resume" button on pauseStage allowing user to continue playing the game.
         playButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Resume Button.png")))));
         playButtonPM.addListener(new ClickListener() {
             @Override
@@ -315,6 +331,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 sceneId = 1;
             }
         });
+        // Formats and adds buttons and text to pauseStage.
         playButtonPM.setPosition(Gdx.graphics.getWidth() / 2f - playButtonPM.getWidth() / 2,
                                  Gdx.graphics.getHeight() / 2f - playButtonPM.getHeight() / 2);
         Image pauseMenuText = new Image(new Texture(Gdx.files.internal("text/Paused Text.png")));
@@ -328,8 +345,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
                                    Gdx.graphics.getHeight()/2f - pauseMenuTable.getHeight() / 2);
         pauseStage.addActor(pauseMenuTable);
 
+        // Sets up tutorialStage
+
         tutorialStage = new Stage();
 
+        // Sets up "back" button on tutorialStage
         backButtonTM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Back Button.png")))));
         backButtonTM.addListener(new ClickListener() {
             @Override
@@ -337,6 +357,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 sceneId = 1;
             }
         });
+
+        // Formats and adds button and text to tutorialStage.
         backButtonTM.setPosition(Gdx.graphics.getWidth() / 2f - backButtonTM.getWidth() / 2,
                                  Gdx.graphics.getHeight() / 2f - backButtonTM.getHeight() / 2);
         Image tutorialMenuText = new Image(new Texture(Gdx.files.internal("text/How To Play.png")));
@@ -348,7 +370,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
             Gdx.graphics.getHeight()/2f - tutorialMenuTable.getHeight() / 2);
         tutorialStage.addActor(tutorialMenuTable);
 
+        // Sets up the stage at the end of the game.
+
         endTimeStage = new Stage();
+
+        // Sets up, formats and adds text and "quit" button to tutorialStage
         Image endTimeText = new Image(new Texture(Gdx.files.internal("text/Time up Text.png")));
         ImageButton quitButtonTS = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("buttons/Quit.png"))));
         quitButtonTS.addListener(new ClickListener() {
@@ -372,6 +398,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Sets up background colour to be set for each stage.
         backgroundColourSR.begin(ShapeRenderer.ShapeType.Filled);
         backgroundColourSR.setColor(mainColour);
         backgroundColourSR.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -381,22 +408,31 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         switch(sceneId){
             case 0:
+                // The menu stage.
+
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(menuStage);
+
                 menuStage.act(Gdx.graphics.getDeltaTime());
                 menuStage.draw();
                 break;
             case 1:
+                // The game play stage.
+
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(mainStage);
+
                 mainStage.act(Gdx.graphics.getDeltaTime());
                 time -= Gdx.graphics.getDeltaTime();
+
+                // Sets up timer and moves player to end of game stage when finished.
                 if (time < 0) sceneId = 4;
                 timeTextLabel.setText(String.valueOf(Math.round(time)));
                 mainStage.draw();
                 break;
             case 2:
-                // pause screen
+                // The paused game stage.
+
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(pauseStage);
 
@@ -404,7 +440,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 pauseStage.draw();
                 break;
             case 3:
-                // tutorial screen
+                // The tutorial stage.
+
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(tutorialStage);
 
@@ -412,7 +449,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 tutorialStage.draw();
                 break;
             case 4:
-                // end of game screen
+                // The stage at the end of the game.
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(endTimeStage);
 
