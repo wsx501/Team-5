@@ -450,6 +450,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 break;
             case 4:
                 // The stage at the end of the game.
+
                 Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(endTimeStage);
 
