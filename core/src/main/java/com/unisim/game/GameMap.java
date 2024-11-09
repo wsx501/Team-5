@@ -7,11 +7,14 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class gameMap extends Actor {
+/**
+ * Represents a tiled map, and handles its rendering.
+ */
+public class GameMap extends Actor {
     TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
 
-    public gameMap() {
+    public GameMap() {
         tiledMap = new TmxMapLoader().load("TEAM5ENG1map.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
