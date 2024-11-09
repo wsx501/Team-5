@@ -17,6 +17,7 @@ public class Building {
         else this.size = 2;
     }
 
+    /**Returns the filepath of the building image*/
     public String getName() {
         return filepath;
     }

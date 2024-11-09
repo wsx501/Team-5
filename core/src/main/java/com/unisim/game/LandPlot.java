@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * button manages the click actions of LandPlot, enabling a player to place a building.</p>
  */
 public class LandPlot extends Actor {
+    /**The building placed on the area of land/*/
     private Building buildingPlaced;
     /**The maximum allowed size of buildings.*/
     private final int maxSize;
