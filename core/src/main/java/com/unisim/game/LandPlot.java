@@ -1,40 +1,39 @@
 package com.unisim.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import java.awt.*;
-import java.awt.event.ActionListener;
-
+/**
+ * Represents an area of land where a building can be placed. LandPlot extends {@link Actor} and primarily contains an
+ * image and a button.
+ * <p>The image is used to represent the availability of the LandPlot, and then to display the building once placed. The
+ * button manages the click actions of LandPlot, enabling a player to place a building.</p>
+ */
 public class LandPlot extends Actor {
     private Building buildingPlaced;
-    private int maxSize;
-    private int x, y, width, height;
+    /**The maximum allowed size of buildings.*/
+    private final int maxSize;
+    private final int x, y, width, height;
     private boolean occupied;
 
     Button button;
+    Image image;
+    Skin skin;
+
+    // Different textures that image can be set to.
     Texture greenTexture;
     Texture redTexture;
     Texture imageTexture;
     Texture seeThroughTexture;
-    Image image;
-    Skin skin;
 
     public LandPlot(int maxSize, int x, int y, int width, int height) {
         this.maxSize = maxSize;
@@ -79,11 +78,16 @@ public class LandPlot extends Actor {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                // If a building is selected for placement, the LandPlot is unoccupied, and the building selected is
+                // within the size limit.
                 if (main.selectedBuilding > -1
                     && !isOccupied()
-                    && main.buildingTypes[main.selectedBuilding].getSize() <= maxSize) {
+                    && main.buildingTypes[main.selectedBuilding].getSize() <= maxSize)  {
+                    // Setting the building of the LandPlot, and the texture needed for the image.
                     buildingPlaced = main.buildingTypes[main.selectedBuilding].deepCopy();
                     imageTexture = new Texture(Gdx.files.internal(buildingPlaced.getName()));
+
+                    // Disabling the state of a building being selected for placement.
                     main.selectedBuilding = -1;
                     setOccupied();
                 }
@@ -97,9 +101,12 @@ public class LandPlot extends Actor {
         super.act(delta);
         //image.setPosition(x, y);
         //image.setSize(width,width);
+
+        // If the LandPlot doesn't contain a building, and a building has been selected for placement.
         if (main.selectedBuilding > -1 && !isOccupied()) {
+            // If the building selected is within size constraints.
             if (main.buildingTypes[main.selectedBuilding].getSize() <= maxSize) {
-                // needs to green
+                // needs to go green
                 image.setDrawable(new TextureRegionDrawable(new TextureRegion(greenTexture)));
 
             }
@@ -108,10 +115,12 @@ public class LandPlot extends Actor {
                 image.setDrawable(new TextureRegionDrawable(new TextureRegion(redTexture)));
             }
         }
+        // If the LandPlot contains a building.
         else if (isOccupied()) {
             // show building
             image.setDrawable(new TextureRegionDrawable(new TextureRegion(imageTexture)));
         }
+        // If the LandPlot is empty, and there is no building selected for placement.
         else {
             // show nothing
             image.setDrawable(new TextureRegionDrawable(new TextureRegion(seeThroughTexture)));
@@ -119,9 +128,9 @@ public class LandPlot extends Actor {
         // otherwise : has a building placed
     }
 
-    public void setBuilding(Building buildingPlaced) {
-        this.buildingPlaced = buildingPlaced;
-    }
+//    public void setBuilding(Building buildingPlaced) {
+//        this.buildingPlaced = buildingPlaced;
+//    }
 
     public void setOccupied() {
         occupied = true;

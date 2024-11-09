@@ -5,13 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.*;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sun.tools.javac.Main;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class main extends ApplicationAdapter implements InputProcessor {
@@ -29,10 +28,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Stage endTimeStage;
 
     //TextButton testButton;
-    TextButton.TextButtonStyle playButtonStyle;
-    BitmapFont font;
-    Viewport viewport;
-    TextureAtlas buttonAtlas;
+//    TextButton.TextButtonStyle playButtonStyle;
+//    BitmapFont font;
+//    Viewport viewport;
+//    TextureAtlas buttonAtlas;
 
     SpriteBatch testBatch;
     Skin skin;
@@ -45,16 +44,17 @@ public class main extends ApplicationAdapter implements InputProcessor {
     ImageButton playImgButton;
 
     Label buildingsTitle;
-    TextField buildingsText;
+//    TextField buildingsText;
     Label countersTitle;
-    TextField counterText;
+//    TextField counterText;
 
-    Image accommodationImg;
-    Image clubImg;
-    Image foodHallImg;
-    Image gymImg;
-    Image lectureHallImg;
-    Image constructionImg;
+//    Texture accommodationTex;
+//    Texture clubTex;
+//    Texture foodHallTex;
+//    Texture gymTex;
+//    Texture lectureHallTex;
+//    Texture constructionTex;
+//    Texture seeThroughTex;
 
     Image mainMenuText;
     Image pauseMenuText;
@@ -73,7 +73,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //    ImageButton gymButton;
 //    ImageButton lectureHallButton;
 
-    Image[] buildingImgs;
+//    Image[] buildingImgs;
     Label[] buildingCounters;
     Label[] buildingLabels;
     ImageButton[] buildingButtons;
@@ -88,12 +88,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
     Label scoreTitleLabel;
     Label scoreTextLabel;
 
-    // to change
-    float time = 10f;
+    float time = 300f;
     Label timeTitleLabel;
     Label timeTextLabel;
 
     Color mainColour;
+    ShapeRenderer backgroundColourSR;
 
     Table buildingsTable;
     Table buttonsTable;
@@ -114,6 +114,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
     // Represents corresponding building types from the selection menu
     // -1 by default, no building selected
     public static int selectedBuilding = -1;
+
+    Image buildingImage;
+
+    String[] filepaths;
 
 //    ImageButton resumeButtonOnPause;
 //    ImageButton resumeButtonOnTutorial;
@@ -138,9 +142,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         //font.setUseIntegerPositions(false);
         //font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
+        //Gdx.gl.glClearColor(1f, 0.23f, 0.17f, 1);
 
-        menuStage = new Stage();
-        mainColour = new Color(0.09f, 0.41f, 0.22f, 1f);
+        mainColour = new Color(0f, 0.23f, 0.17f, 1f);
+        backgroundColourSR = new ShapeRenderer();
 
 //        MenuButton playButton = new MenuButton("buttons/Play Button.png",0, 0, 0.5f);
 //        playButton.setPosition(Gdx.graphics.getWidth()/2f - playButton.getWidth() / 2,
@@ -156,8 +161,10 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
 
 
-        Image PauseMenuText;
-        Image TutorialText;
+//        Image PauseMenuText;
+//        Image TutorialText;
+
+        menuStage = new Stage();
 
         // play button on menu stage
         playImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Play Button.png")))));
@@ -210,17 +217,19 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
         buildingsTitle = new Label("Buildings", skin);
         buildingsTitle.setFontScale(1.5f);
-        buildingsText = new TextField("", skin);
+        //buildingsText = new TextField("", skin);
         countersTitle = new Label("Counter", skin);
         countersTitle.setFontScale(1.5f);
-        counterText = new TextField("", skin);
+        //counterText = new TextField("", skin);
 
-        accommodationImg = new Image(new Texture(Gdx.files.internal("Accommodation.png")));
-        clubImg = new Image(new Texture(Gdx.files.internal("Club.png")));
-        foodHallImg = new Image(new Texture(Gdx.files.internal("Food Hall.png")));
-        gymImg = new Image(new Texture(Gdx.files.internal("Gym.png")));
-        lectureHallImg = new Image(new Texture(Gdx.files.internal("lecture hall.png")));
-        constructionImg = new Image(new Texture(Gdx.files.internal("Construction.png")));
+//        accommodationTex = new Texture(Gdx.files.internal("Accommodation.png"));
+//        clubTex = new Texture(Gdx.files.internal("Club.png"));
+//        foodHallTex = new Texture(Gdx.files.internal("Food Hall.png"));
+//        gymTex = new Texture(Gdx.files.internal("Gym.png"));
+//        lectureHallTex = new Texture(Gdx.files.internal("lecture hall.png"));
+//        constructionTex = new Texture(Gdx.files.internal("Construction.png"));
+//        seeThroughTex = new Texture(Gdx.files.internal("textures/see through.txt"));
+        buildingImage = new Image(new Texture(Gdx.files.internal("textures/see through.png")));
 
 //        accommodationButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Accommodation.png")))));
 //        clubButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Club.png")))));
@@ -240,7 +249,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //        gymCounter = new Label("0", skin);
 //        lectureCounter = new Label("0", skin);
 
-        String[] filepaths = {"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
+        filepaths = new String[]{"Accommodation.png", "Lecture hall.png", "Food hall.png", "Gym.png", "Club.png"};
 
         // adding buttons for each building type
         buildingButtons = new ImageButton[5];
@@ -294,11 +303,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
 //        buildingsTable.add(lectureCounter);
 
 //        // https://stackoverflow.com/questions/39081993/libgdx-scene2d-set-background-color-of-table
-//        // i tried
-        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
-        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
-        backgroundPM.setColor(backgroundColour);
-        backgroundPM.fill();
+////        // i tried
+//        Color backgroundColour = new Color(0.09f, 0.41f, 0.22f, 1f);
+//        Pixmap backgroundPM = new Pixmap(1,1, Pixmap.Format.RGB565);
+//        backgroundPM.setColor(backgroundColour);
+//        backgroundPM.fill();
 
         // adding event listeners
         for (int i = 0; i < filepaths.length; i++) {
@@ -310,8 +319,15 @@ public class main extends ApplicationAdapter implements InputProcessor {
                         buildingCounters[finalI].setText(String.valueOf(Integer.parseInt(buildingCounters[finalI].getText().toString()) + 1));
                         main.selectedBuilding = finalI;
                     }
+                    else if (selectedBuilding == finalI){
+                        buildingCounters[finalI].setText(String.valueOf(Integer.parseInt(buildingCounters[finalI].getText().toString()) + - 1));
+                        main.selectedBuilding = -1;
+
+                    }
                 }
+
             });
+
         }
 
         // adding score table
@@ -539,6 +555,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        backgroundColourSR.begin(ShapeRenderer.ShapeType.Filled);
+        backgroundColourSR.setColor(mainColour);
+        backgroundColourSR.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        backgroundColourSR.end();
+
         // makes sprite follow mouse (on left click)
         // or changes scene to mainStage
         //if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -556,12 +577,14 @@ public class main extends ApplicationAdapter implements InputProcessor {
         //testSprite.draw(testBatch);
         //testBatch.end();
 
+        //Gdx.input.setInputProcessor(this);
+
         camera.update();
 
         switch(sceneId){
             case 0:
                 //Gdx.gl.glClearColor(0.45f, 0.52f, 0.98f, 1);
-                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(menuStage);
                 //if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                   //  if (());
@@ -582,7 +605,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 testBatch.end(); // to remove
                 break;
             case 1:
-                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 //Gdx.gl.glClearColor(0.45f, 0.52f, 0.98f, 1);
                 Gdx.input.setInputProcessor(mainStage);
 
@@ -594,7 +617,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 break;
             case 2:
                 // pause screen
-                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(pauseStage);
 
                 pauseStage.act(Gdx.graphics.getDeltaTime());
@@ -602,7 +625,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 break;
             case 3:
                 // tutorial screen
-                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(tutorialStage);
 
                 tutorialStage.act(Gdx.graphics.getDeltaTime());
@@ -610,7 +633,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 break;
             case 4:
                 // end of game screen
-                Gdx.gl.glClearColor(0f, 0.23f, 0.17f, 1);
+                Gdx.gl.glClearColor(0f, 0f, 0f, 1);
                 Gdx.input.setInputProcessor(endTimeStage);
 
                 endTimeStage.act(Gdx.graphics.getDeltaTime());
@@ -662,7 +685,14 @@ public class main extends ApplicationAdapter implements InputProcessor {
     }
 
     @Override
-    public boolean mouseMoved(int i, int i1) {
+    public boolean mouseMoved(int screenX, int screenY) {
+//        if (selectedBuilding != -1) {
+//            buildingImage = new Texture(filepaths[selectedBuilding]);
+//        }
+//        else {
+//            buildingImage = new Texture(Gdx.files.internal("textures/see through.png"));
+//        }
+//        buildingImage.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
         return false;
     }
 
